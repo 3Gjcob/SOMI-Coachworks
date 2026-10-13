@@ -31,7 +31,7 @@ def main():
         shutil.rmtree(out)
     shutil.copytree(DIST, out)
 
-    attr = re.compile(r'(\s(?:href|src)=")/(?!/)')
+    attr = re.compile(r'(\s(?:href|src|srcset)=")/(?!/)')
     for path in out.rglob('*'):
         if path.suffix not in {'.html', '.xml', '.txt', '.js'}:
             continue

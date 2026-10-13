@@ -18,7 +18,11 @@ standard-library script and served as plain static files.
 | `dist/` | **The website.** Ready-to-host root: 12 HTML pages, CSS, JS, fonts, images, `sitemap.xml`, `robots.txt`, `site-config.json` |
 | `scripts/build-site.py` | Page generator — all bilingual copy, navigation, services, reviews, hours, metadata, `ORIGIN` |
 | `scripts/repair_gallery.py` | Before/after repair gallery (Mustang, Bronco) |
-| `dist/styles.css` → `dist/updates.css` → `dist/brand.css` → `dist/polish.css` | CSS layers, loaded in that order after `dist/assets/fonts.css`; `polish.css` holds the latest typography and spacing refinements |
+| `dist/styles.css` → `dist/updates.css` → `dist/brand.css` → `dist/polish.css` | CSS layers, loaded in that order after `dist/assets/fonts/fonts.css`; `polish.css` is the current design layer (colour and font variables, spacing, components) |
+| `dist/assets/fonts/` | Self-hosted Archivo (headings) and Inter (text) variable fonts, Latin subset, with their SIL Open Font License files |
+| `scripts/icons.py` | Inline line icons (Lucide, ISC License) and the Google review mark used by the generator |
+| `dist/assets/somi-logo.png`, `somi-logo-white.png`, `icon-32.png`, `icon-180.png` | Logo with a transparent background, all-white logo for dark backgrounds, and browser-tab icons, made from `somi-brand.png` |
+| `dist/assets/shop-exterior.webp` / `.jpg`, `shop-share.jpg` | Compressed hero photo (WebP with JPEG fallback) and the 1200×630 link-preview image, made from `shop-exterior.png` |
 | `dist/app.js` | Mobile menu, open-hours indicator, dialogs, gallery tabs/views, full-photo viewer, optional estimate form |
 | `dist/site-config.json` | Estimate-form provider config (disabled: phone/email contact is shown instead) |
 | `docs/ORIGINAL_README.md`, `docs/CHECKLIST_STATUS.md` | Original project notes and outstanding shop-dependent tasks |

@@ -27,6 +27,14 @@
   updateHours();
   if ($('#hours-status')) window.setInterval(updateHours, 60000);
   $('#copyright-year').textContent = new Date().getFullYear();
+  // Gentle fade-in as content scrolls into view; skipped for reduced motion.
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const reveal = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('is-visible'); reveal.unobserve(entry.target); }
+    }), {rootMargin: '0px 0px -8% 0px'});
+    $$('.section-heading, .repair-heading, .service-card, .repair-deck, .approach-top, .process-grid article, .review-card, .contact-grid > *, .visit-grid > *, .faq-grid > *, .detail-body')
+      .forEach(el => { el.classList.add('reveal'); reveal.observe(el); });
+  }
   let trigger;
   $$('[data-open-dialog]').forEach(button => button.addEventListener('click', () => {trigger = button; $('#' + button.dataset.openDialog).showModal();}));
   $$('dialog').forEach(dialog => {
