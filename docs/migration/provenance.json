@@ -1,0 +1,38 @@
+{
+  "export_date": "2026-10-13",
+  "project_id": "appgprj_6acd445ebbd881919b949fe40369e5a5",
+  "site_title": "SOMI Coachworks",
+  "live_url": "https://somicoachworks.jkalka28227.chatgpt.site",
+  "audience": "public",
+  "version_number": 3,
+  "version_id": "appgprj_6acd445ebbd881919b949fe40369e5a5~appgver_60cfc95d7c288191a8382a373c4f5558",
+  "source_commit": "415b4feb176efa49c3000d5ed8c2bf8906372a56",
+  "deployment": {
+    "id": "appgdep_6acd61a9390c81918f0d241462a3b0a2",
+    "status": "succeeded",
+    "has_mcp": false,
+    "env_set_revision": 0,
+    "url": "https://somicoachworks.jkalka28227.chatgpt.site"
+  },
+  "archive_sha256": "4e9f94257e1f3029a4a64e555dc4f7f5888992f01e25a46956a7d07ee5cf39d8",
+  "environment_variables": [],
+  "automations": [],
+  "custom_domains": [
+    {
+      "hostname": "www.somicoachworks.com",
+      "status": "pending",
+      "ssl_status": "pending_validation",
+      "observed_at": "2026-10-13",
+      "provider_last_updated_at": "2026-10-13T03:23:38.960050+00:00"
+    }
+  ],
+  "requires_byop": false,
+  "platform_auth_client_exists": true,
+  "notes": [
+    "No source, deployment, access, domain or environment mutations were made for this export.",
+    "The platform has an auth-client record, but the public application source has no login/auth integration.",
+    "original-project contains every Git-tracked file at source_commit, unchanged.",
+    "migration documents and templates are newly authored export assistance, not original application files."
+  ],
+  "original_file_count": 44
+}

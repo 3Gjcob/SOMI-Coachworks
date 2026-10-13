@@ -1,0 +1,15 @@
+{
+  "original_files_verified": 44,
+  "rebuild_byte_identical": true,
+  "html_pages": 12,
+  "local_html_links_checked": 408,
+  "javascript_syntax": "passed",
+  "sitemap": "passed",
+  "form_config": "unchanged_disabled",
+  "python_version": "Python 3.12.14",
+  "node_version": "v24.19.0",
+  "browser_tested": false,
+  "nginx_tested": false,
+  "external_form_delivery_tested": false,
+  "production_deployment_performed": false
+}

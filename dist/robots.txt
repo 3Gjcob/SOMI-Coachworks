@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://somicoachworks.jkalka28227.chatgpt.site/sitemap.xml

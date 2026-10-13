@@ -1,0 +1,22 @@
+# New migration example, NOT an exported ChatGPT Sites server configuration.
+# Include this server block inside an existing NGINX http context.
+# Change hostname and root, validate configuration, then configure HTTPS with your host.
+server {
+    listen 80;
+    server_name somi.example;
+
+    root /srv/somi/dist;
+    index index.html;
+
+    # Ensure the parent http context includes the standard mime.types file.
+    # Preserve the real multi-page routes; unknown routes should return 404.
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location = /site-config.json {
+        add_header Cache-Control "no-store" always;
+    }
+
+    # No backend, proxy_pass, database, auth gate or API key is required.
+}

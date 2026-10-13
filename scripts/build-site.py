@@ -1,0 +1,207 @@
+"""Build the bilingual static site. Run from the repository root."""
+from pathlib import Path
+from html import escape
+import json
+from repair_gallery import gallery
+
+ROOT = Path(__file__).resolve().parents[1]
+DIST = ROOT / 'dist'
+ORIGIN = 'https://somicoachworks.jkalka28227.chatgpt.site'
+IG = 'https://www.instagram.com/somicoachworks/'
+MAP = 'https://www.google.com/maps/search/?api=1&query=South+Miami+Coach+Works+5780+SW+68th+St'
+DIRECTIONS = 'https://www.google.com/maps/dir/?api=1&destination=South+Miami+Coach+Works+5780+SW+68th+St+South+Miami+FL+33143'
+DFS = 'https://www.myfloridacfo.com/docs-sf/consumer-services-libraries/consumerservices-documents/understanding-coverage/consumer-guides/english---automobile-insurance-toolkit.pdf?sfvrsn=6b999793_9'
+
+EN = {
+ 'lang':'en','home':'/','other':'/es/','other_label':'Español','title':'Auto Body & Collision Repair in South Miami',
+ 'description':'South Miami Coach Works: collision repair, paint, bodywork and free estimates at 5780 SW 68th St. Call (305) 397-8911. Se habla español.',
+ 'skip':'Skip to content','services':'Services','work':'Our work','about':'About us','reviews':'Reviews','visit':'Visit us','estimate':'Free estimate','privacy':'Privacy',
+ 'hero':'AUTO BODY.<br><span>SOUTH MIAMI.</span>',
+ 'hero_eyebrow':'SOUTH MIAMI COACH WORKS',
+ 'hero_copy':'Collision repair, bodywork and refinishing at 5780 SW 68th St. Start with a free estimate and talk through your repair with our team.',
+ 'call':'Call (305) 397-8911','explore':'Explore services','spanish':'Se habla español','rating':'5.0 on Google · 14 reviews','rating_date':'Google rating shown from October 2026.',
+ 'trust':['FREE ESTIMATES','ALL MAKES & MODELS','INSURANCE CLAIM ASSISTANCE','SE HABLA ESPAÑOL'],
+ 'services_title':'REPAIR, PAINT<br>& FINISHING CARE.',
+ 'services_intro':'Tell us what happened and what you want to fix. We’ll inspect your vehicle and explain the work before you decide.',
+ 'learn':'Service details','not_sure':'Not sure which service you need?','ask':'Call and describe the damage.',
+ 'service_data':[
+  ['collision-repair','Collision repair','After an accident, we assess the damaged areas and discuss the repair plan with you. Bring your claim information if you’re using insurance so we can help with the next steps.','Damage assessment · Repair planning · Insurance assistance',
+   'An estimate starts with a look at the vehicle, not a promise based on one photograph. We’ll discuss the visible damage, which areas need a closer inspection, and what information your insurer may need.',
+   'Bring the year, make and model, photos of the damaged areas, and your claim number if one has been assigned. Ask the team about parts availability and the expected schedule before arranging a drop-off.'],
+  ['paint-refinishing','Paint & refinishing','We assess scratches, paint damage and panels that need refinishing. We’ll talk through the finish you’re looking for and the preparation your vehicle needs before providing an estimate.','Scratches · Panel refinishing · Paint assessment',
+   'Paint repairs begin with assessing the affected finish and the condition of the panel underneath. Tell us whether you’re addressing accident damage, a scratch or a larger cosmetic project.',
+   'The scope of preparation and refinishing depends on the condition of the vehicle. Ask us about the areas included in your estimate, the expected finish and aftercare before authorizing the work.'],
+  ['body-dent-repair','Body & dent repair','Dents, scrapes and damaged panels need a closer look before a repair method is chosen. We’ll inspect the affected areas and explain the available bodywork options for your vehicle.','Dents · Scrapes · Body panels',
+   'Parking damage, scrapes and dents can affect both the shape of a panel and its finish. We’ll look at the location, size and depth of the damage before discussing repair options.',
+   'Photos are a useful starting point, but some damage needs an in-person inspection. Ask us which repairs and any associated paintwork are included in your written estimate.'],
+  ['glass-detailing','Glass & finishing care','Ask us about automotive glass replacement, detailing and headlight restoration. We’ll confirm the right service for your vehicle and discuss any related work before you book.','Glass replacement · Detailing · Headlight restoration',
+   'Tell us whether you need damaged glass assessed, headlights restored or detailing for your vehicle. We’ll confirm the service and scope when you contact the shop.',
+   'For glass work, ask about any camera or sensor calibration your vehicle may require. Availability, the repair method and any specialist work need to be confirmed for your particular vehicle.']
+ ],
+ 'work_title':'SEE WHAT’S<br>IN THE SHOP.',
+ 'work_copy':'Follow @somicoachworks for the photos and updates shared by our team. Explore the shop’s posts, then call us about your own repair.',
+ 'ig_cta':'View our work on Instagram','ig_label':'PHOTOS & SHOP UPDATES','ig_note':'Opens the shop’s Instagram profile.',
+ 'about_title':'LOCAL SERVICE.<br>EXPERIENCED HANDS.',
+ 'about_copy':'We’re South Miami Coach Works, also known as SOMI Coachworks. Our paint and body shop is on SW 68th Street, just off Red Road in South Miami.',
+ 'about_more':'Our team brings more than 20 years of experience to the work. Speak with us in English or Spanish about collision damage, bodywork or your next paint project.',
+ 'experience':'20+','experience_label':'years of experience','experience_note':'As shared on our shop’s Instagram profile.',
+ 'areas_title':'Close to home.','areas':'Visit us from South Miami, Coral Gables, Pinecrest, Kendall, Westchester and nearby Miami neighborhoods.',
+ 'process_title':'HOW TO GET STARTED',
+ 'steps':[['Arrange an estimate.','Call us with your vehicle details and a description of the damage. We’ll discuss an assessment.'],['Review the repair.','Talk through the recommended work, your insurance claim and the expected schedule with our team.'],['Plan your drop-off.','Confirm the approved work and timing directly with the shop before bringing in your vehicle.']],
+ 'reviews_title':'WHAT OUR<br>CUSTOMERS SAY.', 'review_excerpt':'Selected Google review excerpts.','read_reviews':'Read reviews on Google','leave_review':'Leave us a review','leave_note':'Open our Google listing, then choose “Write a review.”',
+ 'estimate_title':'LET’S LOOK<br>AT YOUR <span>CAR.</span>',
+ 'estimate_copy':'Call to arrange a free estimate. Have your vehicle’s year, make and model ready, and tell us where the damage is.',
+ 'contact_title':'Arrange your free estimate','contact_text':'Speak with the shop about your repair and a time to bring the vehicle in. Prefer email? Send your details and damage photos directly to us.',
+ 'email':'Email the shop','send_photos':'You can attach damage photos to your email.','estimate_note':'The shop confirms all appointments, repair pricing and availability.',
+ 'form_title':'Request an estimate','form_intro':'Tell us about the vehicle and add photos of the damage. The shop will confirm next steps; submitting does not reserve an appointment.',
+ 'name':'Your name','phone':'Phone number','email_label':'Email address','year':'Vehicle year','vehicle':'Make & model','service':'Service','select':'Select a service','other_service':'Something else / not sure','details':'Describe the damage','insurance':'Insurance company (optional)','photos':'Damage photos (optional)','photo_help':'Up to 5 JPG, PNG or WebP images, 5 MB each.','consent':'I agree that the shop may contact me about this request.','submit':'Send estimate request','form_privacy':'We use your contact details and photos to respond to this request.','form_error':'We couldn’t send your request. Your details are still here. Try again or call (305) 397-8911.','form_success':'Your request was submitted. The shop will confirm the next steps.','form_sending':'Sending…','form_invalid':'Please add up to 5 JPG, PNG or WebP images of 5 MB or less each.','form_phone_error':'Enter a valid phone number with area code.','form_photo_count':'photos selected','form_external':'Open secure estimate form',
+ 'visit_title':'FIND US<br>IN SOUTH MIAMI.','directions':'Get directions','hours':'Shop hours','monday':'Monday','weekdays':'Tuesday – Friday','weekends':'Saturday – Sunday','closed':'Closed','hours_note':'Please call before visiting, especially on holidays.','hours_open':'WITHIN LISTED HOURS','hours_closed':'OUTSIDE LISTED HOURS','maps':'Open in Google Maps',
+ 'faq_title':'BEFORE<br>YOUR REPAIR.','faq_intro':'Have another question? Call us.',
+ 'faqs':[
+  ['Are estimates free?','Yes. Call us at (305) 397-8911 to arrange an assessment. Have the vehicle’s year, make, model and a description of the damage ready.'],
+  ['Can you help with my insurance claim?','Yes. We offer insurance claim assistance and work with claims from all insurance companies. Bring your insurer’s name and claim number; coverage, deductibles and payment are determined by your policy and insurer.'],
+  ['Can I choose my repair shop?','Yes. Florida’s Department of Financial Services says you may select the shop that repairs your car after an accident. Discuss coverage, the estimate and any differences in cost with your insurer before authorizing work.'],
+  ['Do you work on my make and model?','Yes. We work on all makes and models. Call us with your vehicle details so we can confirm the appropriate work, parts and any specialist services needed.'],
+  ['What warranty applies to my repair?','Ask us for the written warranty terms for your specific repair before approving the work. We’ll discuss what is covered, how long coverage lasts and any exclusions.'],
+  ['Can you help with towing or a rental?','Call us before arranging a tow so we can confirm where and when to bring the vehicle. Ask about current towing assistance and rental options; rental coverage depends on your insurance policy.'],
+  ['How long will my repair take?','The timing depends on the damage, parts and the work required. We’ll discuss the expected schedule after assessing your vehicle. Call us directly for an update on an existing repair.']
+ ],
+ 'consumer_guide':'Florida consumer guide','claims':'Insurance claims','back':'Back to home','top':'Back to top','footer_line':'5780 SW 68th St · South Miami, FL 33143','footer_cta':'CALL ABOUT<br>YOUR REPAIR.',
+ 'privacy_title':'Your privacy','privacy_text':'When you call or email the shop, your contact details and any photos are used to respond to your repair inquiry. An online request form, when available, also shares those details with the form provider and the shop. Do not send payment details, identification documents or unnecessary personal information.','privacy_more':'Google Maps and Instagram have their own privacy policies. This site does not use advertising analytics. For questions about information sent to the shop, contact somicoachworks@gmail.com.',
+ 'photo_title':'Photography','photo_text':'The hero image is an automotive stock photograph from Unsplash. It is not presented as a SOMI customer project or the shop’s premises.','photo_link':'View photo source','close':'Close dialog',
+ 'claim_title':'INSURANCE<br>CLAIM ASSISTANCE.','claim_intro':'Bring your claim information. We’ll discuss the vehicle assessment and the next steps for the repair.',
+ 'claim_sections':[['What to have ready','Bring your vehicle details, insurer’s name, claim number and adjuster’s contact information if you have them. Keep copies of the estimate and any authorization you sign.'],['Your choice of shop','Florida consumer guidance says you can select your repair shop after an accident. Talk with your insurer about coverage and any difference between its estimate and the shop’s estimate before work begins.'],['Know what is approved','Confirm the work, deductible, payment arrangements and any additional authorization needed if more damage is found. The shop cannot guarantee insurance coverage or a rental reimbursement.']],
+ 'detail_next':'READY TO DISCUSS YOUR VEHICLE?','detail_note':'An in-person assessment may be needed to confirm scope and pricing.'
+}
+
+ES = {
+ 'lang':'es','home':'/es/','other':'/','other_label':'English','title':'Reparación de carrocería y choques en South Miami',
+ 'description':'South Miami Coach Works: reparación de choques, carrocería, pintura y estimados gratis. 5780 SW 68th St. Llame al (305) 397-8911. Se habla español.',
+ 'skip':'Ir al contenido','services':'Servicios','work':'Trabajos','about':'Nosotros','reviews':'Reseñas','visit':'Visítenos','estimate':'Estimado gratis','privacy':'Privacidad',
+ 'hero':'CARROCERÍA.<br><span>SOUTH MIAMI.</span>','hero_eyebrow':'SOUTH MIAMI COACH WORKS',
+ 'hero_copy':'Reparación de choques, carrocería y pintura en 5780 SW 68th St. Empiece con un estimado gratis y hable de la reparación con nuestro equipo.',
+ 'call':'Llame al (305) 397-8911','explore':'Ver servicios','spanish':'Se habla español','rating':'5.0 en Google · 14 reseñas','rating_date':'Calificación de Google de octubre de 2026.',
+ 'trust':['ESTIMADOS GRATIS','TODAS LAS MARCAS Y MODELOS','AYUDA CON RECLAMOS','SE HABLA ESPAÑOL'],
+ 'services_title':'CARROCERÍA,<br>PINTURA Y ACABADO.','services_intro':'Cuéntenos qué pasó y qué necesita reparar. Revisaremos su vehículo y le explicaremos el trabajo antes de que decida.',
+ 'learn':'Detalles del servicio','not_sure':'¿No sabe qué servicio necesita?','ask':'Llámenos y describa el daño.',
+ 'service_data':[
+  ['collision-repair','Reparación de choques','Después de un accidente, evaluamos las zonas dañadas y hablamos con usted sobre el plan de reparación. Traiga la información del reclamo si usará su seguro para que podamos ayudarle con los próximos pasos.','Evaluación de daños · Plan de reparación · Ayuda con el seguro',
+   'El estimado comienza con una revisión del vehículo. Hablaremos de los daños visibles, las zonas que necesitan una inspección más detallada y la información que podría pedir su aseguradora.',
+   'Tenga a mano el año, la marca y el modelo, fotos de las zonas dañadas y el número del reclamo, si lo tiene. Pregunte por la disponibilidad de piezas y el plazo previsto antes de dejar el vehículo.'],
+  ['paint-refinishing','Pintura y acabado','Evaluamos rayones, daños en la pintura y paneles que necesitan un nuevo acabado. Hablaremos del resultado que busca y la preparación que necesita su vehículo antes de darle un estimado.','Rayones · Pintura de paneles · Evaluación del acabado',
+   'La reparación de pintura comienza con una evaluación del acabado y del panel. Díganos si se trata de daños por un choque, un rayón o un proyecto estético más amplio.',
+   'La preparación y el trabajo de pintura dependen del estado del vehículo. Pregunte qué zonas incluye el estimado, qué resultado puede esperar y cómo cuidar la pintura antes de autorizar el trabajo.'],
+  ['body-dent-repair','Carrocería y abolladuras','Las abolladuras, los roces y los paneles dañados necesitan una inspección antes de elegir el método de reparación. Revisamos las zonas afectadas y explicamos las opciones para su vehículo.','Abolladuras · Roces · Paneles de carrocería',
+   'Los golpes de estacionamiento, los roces y las abolladuras pueden afectar tanto la forma del panel como la pintura. Evaluamos la ubicación, el tamaño y la profundidad del daño antes de hablar de las opciones.',
+   'Las fotos ayudan a comenzar, pero algunos daños requieren una inspección en persona. Pregunte qué reparaciones y trabajos de pintura están incluidos en su estimado por escrito.'],
+  ['glass-detailing','Cristales y cuidado final','Pregunte por el reemplazo de cristales, la limpieza detallada y la restauración de faros. Confirmaremos el servicio adecuado para su vehículo y cualquier trabajo relacionado antes de coordinar una cita.','Reemplazo de cristales · Limpieza detallada · Restauración de faros',
+   'Díganos si necesita revisar un cristal dañado, restaurar los faros o hacer una limpieza detallada. Confirmaremos el servicio y su alcance cuando se comunique con el taller.',
+   'Para los cristales, pregunte si su vehículo requiere calibración de cámaras o sensores. La disponibilidad, el método y cualquier trabajo especializado deben confirmarse para su vehículo.']
+ ],
+ 'work_title':'CONOZCA<br>NUESTRO TALLER.','work_copy':'Siga a @somicoachworks para ver las fotos y novedades que comparte nuestro equipo. Explore las publicaciones y llámenos para hablar de su reparación.',
+ 'ig_cta':'Ver trabajos en Instagram','ig_label':'FOTOS Y NOVEDADES','ig_note':'Abre el perfil de Instagram del taller.',
+ 'about_title':'ATENCIÓN LOCAL.<br>MANOS EXPERTAS.','about_copy':'Somos South Miami Coach Works, también conocido como SOMI Coachworks. Nuestro taller de carrocería y pintura está en SW 68th Street, cerca de Red Road, en South Miami.',
+ 'about_more':'Nuestro equipo cuenta con más de 20 años de experiencia. Hable con nosotros en español o inglés sobre daños por choques, carrocería o su próximo proyecto de pintura.',
+ 'experience':'20+','experience_label':'años de experiencia','experience_note':'Según el perfil de Instagram de nuestro taller.',
+ 'areas_title':'Cerca de usted.','areas':'Visítenos desde South Miami, Coral Gables, Pinecrest, Kendall, Westchester y las comunidades cercanas de Miami.',
+ 'process_title':'CÓMO COMENZAR','steps':[['Coordine un estimado.','Llámenos con los datos del vehículo y una descripción de los daños para hablar de una evaluación.'],['Revise la reparación.','Hable con nuestro equipo sobre el trabajo recomendado, el reclamo y el plazo previsto.'],['Coordine la entrega.','Confirme el trabajo autorizado y la fecha directamente con el taller antes de traer su vehículo.']],
+ 'reviews_title':'LO QUE DICEN<br>LOS CLIENTES.','review_excerpt':'Fragmentos de reseñas de Google, en su idioma original.','read_reviews':'Leer reseñas en Google','leave_review':'Déjenos una reseña','leave_note':'Abra nuestra ficha de Google y elija «Escribir una reseña».',
+ 'estimate_title':'HABLEMOS<br>DE SU <span>VEHÍCULO.</span>','estimate_copy':'Llame para coordinar un estimado gratis. Tenga a mano el año, la marca y el modelo, y cuéntenos dónde está el daño.',
+ 'contact_title':'Coordine su estimado gratis','contact_text':'Hable con el taller sobre la reparación y cuándo puede traer el vehículo. ¿Prefiere escribir? Envíenos los detalles y las fotos por correo electrónico.',
+ 'email':'Escribir al taller','send_photos':'Puede adjuntar las fotos de los daños al correo.','estimate_note':'El taller confirma todas las citas, los precios y la disponibilidad.',
+ 'form_title':'Solicite un estimado','form_intro':'Describa el vehículo y agregue fotos de los daños. El taller confirmará los próximos pasos; enviar la solicitud no reserva una cita.',
+ 'name':'Su nombre','phone':'Número de teléfono','email_label':'Correo electrónico','year':'Año del vehículo','vehicle':'Marca y modelo','service':'Servicio','select':'Seleccione un servicio','other_service':'Otro / no estoy seguro','details':'Describa los daños','insurance':'Compañía de seguros (opcional)','photos':'Fotos de los daños (opcional)','photo_help':'Hasta 5 imágenes JPG, PNG o WebP, de 5 MB cada una.','consent':'Acepto que el taller me contacte sobre esta solicitud.','submit':'Enviar solicitud','form_privacy':'Usamos sus datos de contacto y fotos para responder a esta solicitud.','form_error':'No pudimos enviar su solicitud. Sus datos siguen aquí. Inténtelo de nuevo o llame al (305) 397-8911.','form_success':'Su solicitud fue enviada. El taller confirmará los próximos pasos.','form_sending':'Enviando…','form_invalid':'Agregue hasta 5 imágenes JPG, PNG o WebP de 5 MB o menos cada una.','form_phone_error':'Ingrese un teléfono válido con código de área.','form_photo_count':'fotos seleccionadas','form_external':'Abrir formulario seguro',
+ 'visit_title':'VISÍTENOS<br>EN SOUTH MIAMI.','directions':'Cómo llegar','hours':'Horario del taller','monday':'Lunes','weekdays':'Martes a viernes','weekends':'Sábado y domingo','closed':'Cerrado','hours_note':'Llame antes de venir, especialmente en días festivos.','hours_open':'DENTRO DEL HORARIO','hours_closed':'FUERA DEL HORARIO','maps':'Abrir en Google Maps',
+ 'faq_title':'ANTES DE<br>LA REPARACIÓN.','faq_intro':'¿Tiene otra pregunta? Llámenos.',
+ 'faqs':[
+  ['¿Los estimados son gratis?','Sí. Llámenos al (305) 397-8911 para coordinar una evaluación. Tenga a mano el año, la marca, el modelo y una descripción de los daños.'],
+  ['¿Me pueden ayudar con el reclamo del seguro?','Sí. Ayudamos con reclamos y trabajamos con todas las compañías de seguros. Traiga el nombre de su aseguradora y el número del reclamo; la cobertura, el deducible y el pago dependen de su póliza y aseguradora.'],
+  ['¿Puedo elegir mi taller?','Sí. El Departamento de Servicios Financieros de Florida indica que usted puede seleccionar el taller que repare su auto después de un accidente. Hable con su aseguradora sobre la cobertura, el estimado y cualquier diferencia de costo antes de autorizar el trabajo.'],
+  ['¿Trabajan con mi marca y modelo?','Sí. Trabajamos con todas las marcas y modelos. Llame con los datos del vehículo para confirmar el trabajo, las piezas y cualquier servicio especializado necesario.'],
+  ['¿Qué garantía tiene mi reparación?','Pídanos los términos de la garantía por escrito para su reparación antes de autorizar el trabajo. Hablaremos de la cobertura, su duración y las exclusiones.'],
+  ['¿Me pueden ayudar con una grúa o un auto de alquiler?','Llámenos antes de coordinar una grúa para confirmar dónde y cuándo recibir el vehículo. Pregunte por la asistencia de grúa y las opciones de alquiler disponibles; la cobertura del alquiler depende de su póliza.'],
+  ['¿Cuánto tarda la reparación?','El plazo depende de los daños, las piezas y el trabajo necesario. Hablaremos del tiempo previsto después de revisar el vehículo. Para consultar el estado de una reparación, llámenos directamente.']
+ ],
+ 'consumer_guide':'Guía de Florida para consumidores (inglés)','claims':'Reclamos de seguros','back':'Volver al inicio','top':'Volver arriba','footer_line':'5780 SW 68th St · South Miami, FL 33143','footer_cta':'HABLEMOS DE<br>SU REPARACIÓN.',
+ 'privacy_title':'Su privacidad','privacy_text':'Cuando llama o escribe al taller, sus datos de contacto y fotos se usan para responder a su consulta. Un formulario en línea, cuando esté disponible, también comparte esos datos con el proveedor del formulario y el taller. No envíe datos de pago, documentos de identidad ni información personal innecesaria.',
+ 'privacy_more':'Google Maps e Instagram tienen sus propias políticas de privacidad. Este sitio no usa analítica publicitaria. Si tiene preguntas sobre datos enviados al taller, escriba a somicoachworks@gmail.com.',
+ 'photo_title':'Fotografía','photo_text':'La imagen principal es una fotografía de automóviles de Unsplash. No se presenta como un trabajo de SOMI ni como una imagen de sus instalaciones.','photo_link':'Ver fuente de la foto','close':'Cerrar ventana',
+ 'claim_title':'AYUDA CON<br>SU RECLAMO.','claim_intro':'Traiga la información de su reclamo. Hablaremos de la evaluación y los próximos pasos de la reparación.',
+ 'claim_sections':[['Qué debe tener a mano','Traiga los datos del vehículo, el nombre de la aseguradora, el número del reclamo y la información del ajustador, si la tiene. Guarde copias del estimado y de las autorizaciones que firme.'],['Usted elige el taller','La guía de Florida para consumidores indica que puede elegir su taller después de un accidente. Hable con su aseguradora sobre la cobertura y cualquier diferencia entre los estimados antes de comenzar.'],['Confirme lo autorizado','Confirme el trabajo, el deducible, la forma de pago y cualquier autorización adicional si se descubren otros daños. El taller no puede garantizar la cobertura ni el reembolso de un vehículo de alquiler.']],
+ 'detail_next':'¿HABLAMOS DE SU VEHÍCULO?','detail_note':'Puede ser necesaria una evaluación en persona para confirmar el alcance y el precio.'
+}
+
+REVIEWS = [('NC','Nelson Colon','Great job by Carlos and his team. Great quality and turn around time was quick.'),('AG','Andrew Gamil','My car looked brand new! I plan on bringing my other vehicle to get the same treatment! Highly recommend!'),('MT','Martin Thiry','I highly recommend this auto body shop. The service is excellent and work is completed on time and perfect the first time.')]
+
+def button(text, href, style='red', extra=''):
+ return f'<a class="button button-{style}" href="{escape(href)}" {extra}>{text}</a>'
+
+def logo(home):
+ return f'<a class="wordmark brand-mark" href="{home}#top" aria-label="Somi Coach Works — home"><img src="/assets/somi-brand.png" alt="SoMi Coach Works — We Meet By Accident" width="1499" height="1049"></a>'
+
+def head(d, path='', detail=None):
+ url=ORIGIN+d['home']+path
+ title=(detail or d['title'])+' | South Miami Coach Works'
+ schema={'@context':'https://schema.org','@type':'AutoBodyShop','@id':ORIGIN+'/#business','name':'South Miami Coach Works','alternateName':['SOMI Coachworks','Somi Coach Works'],'url':ORIGIN+'/','image':ORIGIN+'/assets/somi-brand.png','telephone':'+1-305-397-8911','email':'somicoachworks@gmail.com','address':{'@type':'PostalAddress','streetAddress':'5780 SW 68th St','addressLocality':'South Miami','addressRegion':'FL','postalCode':'33143','addressCountry':'US'},'openingHoursSpecification':[{'@type':'OpeningHoursSpecification','dayOfWeek':['Monday'],'opens':'07:30','closes':'17:00'},{'@type':'OpeningHoursSpecification','dayOfWeek':['Tuesday','Wednesday','Thursday','Friday'],'opens':'07:30','closes':'17:30'}],'areaServed':['South Miami','Coral Gables','Pinecrest','Kendall','Westchester'],'sameAs':[IG,MAP],'availableLanguage':['English','Spanish']}
+ # Geo coordinates and aggregateRating are intentionally omitted until verified/current.
+ return f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#082451"><title>{escape(title)}</title><meta name="description" content="{escape(d['description'],quote=True)}"><link rel="canonical" href="{url}"><link rel="alternate" hreflang="en" href="{ORIGIN}/{path}"><link rel="alternate" hreflang="es" href="{ORIGIN}/es/{path}"><link rel="alternate" hreflang="x-default" href="{ORIGIN}/{path}"><meta property="og:title" content="{escape(title,quote=True)}"><meta property="og:description" content="{escape(d['description'],quote=True)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta property="og:image" content="{ORIGIN}/assets/shop-exterior.png"><meta property="og:image:width" content="1525"><meta property="og:image:height" content="1031"><meta property="og:image:alt" content="South Miami Coach Works shop exterior at 5780 SW 68th St"><meta property="og:locale" content="{'es_US' if d['lang']=='es' else 'en_US'}"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/somi-brand.png"><link rel="stylesheet" href="/assets/fonts.css"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/updates.css"><link rel="stylesheet" href="/brand.css"><script src="/app.js" defer></script><script id="site-copy" type="application/json">{json.dumps({k:d[k] for k in ['lang','hours_open','hours_closed','form_error','form_success','form_sending','submit','form_invalid','form_phone_error','form_photo_count']},ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(schema,ensure_ascii=False)}</script></head><body id="top"><a class="skip-link" href="#main">{d['skip']}</a>'''
+
+def header(d,path=''):
+ links=''.join(f'<a href="{d["home"]}#{a}">{d[b]}</a>' for a,b in [('services','services'),('work','work'),('about','about'),('reviews','reviews'),('visit','visit')])
+ return f'''<div class="utility"><div class="container utility-inner"><span>SOUTH MIAMI, FL · {d['spanish']}</span><a href="tel:+13053978911"><strong>(305) 397-8911</strong></a></div></div><header class="header"><div class="container nav-inner">{logo(d['home'])}<nav class="desktop-nav" aria-label="{'Navegación' if d['lang']=='es' else 'Main navigation'}">{links}</nav><a class="language-toggle" href="{d['other']}{path}" lang="{'en' if d['lang']=='es' else 'es'}" hreflang="{'en' if d['lang']=='es' else 'es'}">{d['other_label']}</a><button class="menu-toggle" type="button" aria-label="{'Abrir menú' if d['lang']=='es' else 'Open menu'}" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span></button></div><nav class="mobile-nav" id="mobile-nav" aria-label="{'Menú móvil' if d['lang']=='es' else 'Mobile navigation'}" hidden>{links}<a href="{d['home']}#estimate">{d['estimate']}</a></nav></header>'''
+
+def footer(d):
+ links=''.join(f'<a href="{d["home"]}{path}">{label}</a>' for path,label in [('#services',d['services']),('#about',d['about']),('#reviews',d['reviews']),('insurance-claims/',d['claims'])])
+ return f'''<footer class="footer"><div class="container"><div class="footer-top">{logo(d['home'])}<p>{d['footer_line']}<br>South Miami Coach Works</p><a class="footer-cta" href="tel:+13053978911">{d['footer_cta']}</a></div><div class="footer-links">{links}<a href="{IG}" target="_blank" rel="noopener noreferrer">Instagram</a><a href="tel:+13053978911">(305) 397-8911</a><a href="mailto:somicoachworks@gmail.com">somicoachworks@gmail.com</a></div><div class="footer-bottom"><span>© <span id="copyright-year">2026</span> South Miami Coach Works.</span><button type="button" data-open-dialog="privacy-dialog">{d['privacy']}</button><a href="#top" class="back-top">{d['top']}</a></div></div></footer><div class="mobile-actions"><a href="tel:+13053978911">{d['call']}</a><a href="{d['home']}#estimate">{d['estimate']}</a></div><dialog id="privacy-dialog" aria-labelledby="privacy-title"><div class="dialog-header"><h2 id="privacy-title">{d['privacy_title']}</h2><button class="dialog-close" type="button" aria-label="{d['close']}">×</button></div><p>{d['privacy_text']}</p><p>{d['privacy_more']}</p></dialog></body></html>'''
+
+def form(d):
+ fields=''
+ for name,kind,auto in [('name','text','name'),('phone','tel','tel'),('email_label','email','email'),('year','number','off'),('vehicle','text','off')]:
+  key='email' if name=='email_label' else name
+  limits='min="1900" max="2028"' if name=='year' else ('maxlength="25"' if name=='phone' else 'maxlength="120"')
+  fields+=f'<div><label for="{key}">{d[name]} *</label><input id="{key}" name="{key}" type="{kind}" autocomplete="{auto}" {limits} required></div>'
+ options=''.join(f'<option value="{s[0]}">{s[1]}</option>' for s in d['service_data'])
+ return f'''<div id="online-request" hidden><h3>{d['form_title']}</h3><p>{d['form_intro']}</p><form id="estimate-form" enctype="multipart/form-data"><div class="field-grid">{fields}</div><label for="service">{d['service']} *</label><select id="service" name="service" required><option value="">{d['select']}</option>{options}<option value="other">{d['other_service']}</option></select><label for="details">{d['details']} *</label><textarea id="details" name="details" rows="4" maxlength="2000" required></textarea><label for="insurance">{d['insurance']}</label><input id="insurance" name="insurance" maxlength="100"><label for="photos">{d['photos']}</label><input type="file" id="photos" name="attachment" accept="image/jpeg,image/png,image/webp" multiple aria-describedby="photo-help"><p id="photo-help" class="form-disclosure">{d['photo_help']}</p><div id="photo-previews" class="photo-previews"></div><label class="consent"><input type="checkbox" name="consent" value="yes" required><span>{d['consent']}</span></label><div class="honeypot" aria-hidden="true"><label for="website">Website</label><input id="website" name="_gotcha" tabindex="-1" autocomplete="off"></div><button class="button button-red form-next" id="submit-request" type="submit">{d['submit']}</button><p id="form-status" role="status" aria-live="polite" tabindex="-1"></p><p class="form-disclosure">{d['form_privacy']}</p></form></div>'''
+
+def home(d):
+ h=head(d)+header(d)+'<main id="main">'
+ h+=f'''<section class="hero" aria-labelledby="hero-title"><img class="hero-photo" src="/assets/shop-exterior.png" alt="{'Fachada y estacionamiento de South Miami Coach Works en 5780 SW 68th St' if d['lang']=='es' else 'South Miami Coach Works exterior and front parking lot at 5780 SW 68th St'}" width="1525" height="1031" fetchpriority="high"><div class="hero-shade"></div><div class="container hero-content"><p class="eyebrow"><span class="red-line"></span>{d['hero_eyebrow']}</p><h1 id="hero-title">{d['hero']}</h1><p class="hero-description">{d['hero_copy']}</p><div class="hero-actions">{button(d['call'],'tel:+13053978911')}{button(d['estimate'],'#estimate','outline')}</div><p class="hero-language">{d['spanish']}</p><a class="hero-proof" href="{MAP}" target="_blank" rel="noopener noreferrer"><span class="stars" aria-hidden="true">★★★★★</span><span>{d['rating']}</span></a></div><div class="container hero-bottom"><a class="scroll-cue" href="#services">{d['explore']} ↓</a><span class="hero-location">5780 SW 68th St<br>South Miami, FL 33143</span></div></section><div class="trust-strip"><div class="container trust-inner">{''.join('<span>'+x+'</span>' for x in d['trust'])}</div></div>'''
+ h+=f'''<section class="section services-section" id="services"><div class="container"><div class="section-heading"><div><p class="eyebrow dark">{d['services']}</p><h2>{d['services_title']}</h2></div><p>{d['services_intro']}</p></div><div class="service-card-grid">'''
+ for s in d['service_data']:
+  h+=f'<article class="service-card"><h3>{s[1]}</h3><p>{s[2]}</p><span class="service-specialties">{s[3]}</span><a class="text-link" href="{d["home"]}services/{s[0]}/">{d["learn"]}</a></article>'
+ h+=f'''</div><div class="services-footnote"><span>{d['not_sure']}</span><a href="tel:+13053978911">{d['ask']}</a></div></div></section>{gallery(d)}'''
+ h+=f'''<section class="section approach-section" id="about"><div class="container approach-top"><div><p class="eyebrow">{d['about']}</p><h2>{d['about_title']}</h2></div><div class="approach-intro"><p>{d['about_copy']}</p><p>{d['about_more']}</p><div class="experience"><strong>{d['experience']}</strong><span>{d['experience_label']}</span></div></div></div><div class="container process-label"><p class="eyebrow">{d['process_title']}</p></div><div class="container process-grid">'''
+ for n,step in enumerate(d['steps'],1):h+=f'<article><span class="process-number">0{n}</span><h3>{step[0]}</h3><p>{step[1]}</p></article>'
+ h+=f'''</div><div class="container service-area"><h3>{d['areas_title']}</h3><p>{d['areas']}</p></div></section><section class="section reviews-section" id="reviews"><div class="container"><div class="section-heading"><div><p class="eyebrow dark">{d['reviews']}</p><h2>{d['reviews_title']}</h2></div><a class="rating-block" href="{MAP}" target="_blank" rel="noopener noreferrer"><span class="rating-score">5.0<span class="stars" aria-hidden="true">★★★★★</span></span><span class="rating-caption">{d['rating'].split(' · ')[1]}</span></a></div><p class="review-context">{d['review_excerpt']} {d['rating_date']}</p><div class="review-grid">'''
+ for initials,name,quote in REVIEWS:h+=f'<figure class="review-card"><div class="review-top"><span class="stars" aria-label="5 / 5">★★★★★</span><span class="google-mark" aria-label="Google">G</span></div><blockquote lang="en">“{quote}”</blockquote><figcaption><span class="review-avatar">{initials}</span><b>{name}</b></figcaption></figure>'
+ h+=f'''</div><div class="reviews-bottom"><a class="text-link" href="{MAP}" target="_blank" rel="noopener noreferrer">{d['read_reviews']}</a><div><a class="text-link" href="{MAP}" target="_blank" rel="noopener noreferrer">{d['leave_review']}</a><p>{d['leave_note']}</p></div></div></div></section>'''
+ h+=f'''<section class="contact-section" id="estimate"><div class="container contact-grid"><div class="contact-copy"><p class="eyebrow">{d['estimate']}</p><h2>{d['estimate_title']}</h2><p>{d['estimate_copy']}</p><a class="contact-phone" href="tel:+13053978911">(305) 397-8911</a><div class="contact-note"><p>{d['estimate_note']}</p></div></div><div class="estimate-card"><div id="contact-options"><h3>{d['contact_title']}</h3><p>{d['contact_text']}</p>{button(d['call'],'tel:+13053978911')}<a class="text-link contact-email" href="mailto:somicoachworks@gmail.com">{d['email']}</a><p class="contact-address">somicoachworks@gmail.com</p><p class="form-disclosure">{d['send_photos']}</p><a id="external-form" class="button button-dark" hidden>{d['form_external']}</a></div>{form(d)}</div></div></section>'''
+ h+=f'''<section class="section visit-section" id="visit"><div class="container visit-grid"><div class="visit-copy"><p class="eyebrow dark">{d['visit']}</p><h2>{d['visit_title']}</h2><address>South Miami Coach Works<br>5780 SW 68th St<br>South Miami, FL 33143</address><div class="visit-actions">{button(d['directions'],DIRECTIONS,'dark','target="_blank" rel="noopener noreferrer"')}</div></div><div class="hours-card"><div class="hours-title"><h3>{d['hours']}</h3><span class="hours-status" id="hours-status"></span></div><dl><div data-days="1"><dt>{d['monday']}</dt><dd>7:30 AM – 5:00 PM</dd></div><div data-days="2,3,4,5"><dt>{d['weekdays']}</dt><dd>7:30 AM – 5:30 PM</dd></div><div data-days="6,0"><dt>{d['weekends']}</dt><dd>{d['closed']}</dd></div></dl><p>{d['hours_note']}</p><a href="tel:+13053978911">(305) 397-8911</a></div><div class="map-wrap"><iframe title="South Miami Coach Works — 5780 SW 68th St" src="https://www.google.com/maps?q=South+Miami+Coach+Works+5780+SW+68th+St+South+Miami+FL+33143&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe><a class="map-fallback" href="{MAP}" target="_blank" rel="noopener noreferrer">{d['maps']}</a></div></div></section><section class="faq-section"><div class="container faq-grid"><div><p class="eyebrow dark">FAQ</p><h2>{d['faq_title']}</h2><p><a href="tel:+13053978911">{d['faq_intro']}</a></p><a class="text-link" href="{d['home']}insurance-claims/">{d['claims']}</a></div><div class="faq-list">'''
+ for n,(q,a) in enumerate(d['faqs']):
+  source=f' <a href="{DFS}" target="_blank" rel="noopener noreferrer">{d["consumer_guide"]}</a>' if n==2 else ''
+  h+=f'<details><summary>{q}<span aria-hidden="true">+</span></summary><p>{a}{source}</p></details>'
+ return h+'</div></div></section></main>'+footer(d)
+
+def detail(d,s=None):
+ path='services/'+s[0]+'/' if s else 'insurance-claims/'
+ title=s[1] if s else d['claims']
+ intro=s[2] if s else d['claim_intro']
+ h=head(d,path,title+' — South Miami')+header(d,path)+f'<main id="main"><section class="detail-hero"><div class="container"><a class="text-link light" href="{d["home"]}">{d["back"]}</a><p class="eyebrow">SOUTH MIAMI COACH WORKS</p><h1>{escape(title)}</h1><p>{intro}</p>{button(d["call"],"tel:+13053978911")}</div></section><section class="section"><div class="container detail-body">'
+ if s:h+=f'<p class="eyebrow dark">{s[3]}</p><p>{s[4]}</p><p>{s[5]}</p>'
+ else:
+  for t,p in d['claim_sections']:h+=f'<h2>{t}</h2><p>{p}</p>'
+  h+=f'<a class="text-link" href="{DFS}" target="_blank" rel="noopener noreferrer">{d["consumer_guide"]}</a>'
+ h+=f'<div class="detail-contact"><h2>{d["detail_next"]}</h2><p>{d["detail_note"]}</p>{button(d["estimate"],d["home"]+"#estimate")}</div></div></section></main>'
+ return path,h+footer(d)
+
+paths=[]
+for d in (EN,ES):
+ base=DIST / d['home'].lstrip('/')
+ base.mkdir(parents=True,exist_ok=True)
+ (base/'index.html').write_text(home(d))
+ paths.append(d['home'])
+ for s in [*d['service_data'],None]:
+  path,html=detail(d,s);target=base/path;target.mkdir(parents=True,exist_ok=True);(target/'index.html').write_text(html);paths.append(d['home']+path)
+(DIST/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>'+ORIGIN+p+'</loc></url>' for p in paths)+'</urlset>\n')
+(DIST/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+ORIGIN+'/sitemap.xml\n')
+print('Built',len(paths),'pages with matching English/Spanish routes, canonical links and sitemap.')

@@ -1,0 +1,222 @@
+[
+  {
+    "path": ".gitignore",
+    "bytes": 19,
+    "sha256": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793"
+  },
+  {
+    "path": ".openai/hosting.json",
+    "bytes": 106,
+    "sha256": "d1e3a7efca886f675dc71eef6173668e3a500215022d88870c327442335f878e"
+  },
+  {
+    "path": "CHECKLIST_STATUS.md",
+    "bytes": 3287,
+    "sha256": "77bd9d84c18bb2d59efc4372220a171b46cabaf21b699a3c44e735915952ddec"
+  },
+  {
+    "path": "README.md",
+    "bytes": 6636,
+    "sha256": "a76bc17cfb83455e8e62d7ef762f91fb8b5366befcc1352e6bb9bb08da73eca0"
+  },
+  {
+    "path": "dist/app.js",
+    "bytes": 9075,
+    "sha256": "79eeb2593a44350a1cadb923791570fe7b6c15764e629bd10cf1d6e24823f173"
+  },
+  {
+    "path": "dist/assets/favicon.svg",
+    "bytes": 226,
+    "sha256": "07de826e38d356a508857ac763e994d6d6202739359b6a5722b528b3f5ae2f4d"
+  },
+  {
+    "path": "dist/assets/font-0.ttf",
+    "bytes": 86636,
+    "sha256": "0d85af813fc3ed87db0c6265515689b2eef5cbaf7aab17922528dfc95a2cd73f"
+  },
+  {
+    "path": "dist/assets/font-1.ttf",
+    "bytes": 87120,
+    "sha256": "7dde307fa887fc65ff5830cfada77a7decc5dae8d3c816c9d39ba3f1af1c4ed7"
+  },
+  {
+    "path": "dist/assets/font-2.ttf",
+    "bytes": 87556,
+    "sha256": "73bc9e17231e9073780d3c81574c7253cecd5645c93544df1a935054b39a364f"
+  },
+  {
+    "path": "dist/assets/font-3.ttf",
+    "bytes": 94972,
+    "sha256": "a13d9b41b0a471ce58f0e46d377fa3cc76615e4632c3b15eb397caadf7a13f0a"
+  },
+  {
+    "path": "dist/assets/font-4.ttf",
+    "bytes": 95060,
+    "sha256": "f433e5d333be1128d8ec8a28b8aadd0314d10e14e4105406076666bc830fc15d"
+  },
+  {
+    "path": "dist/assets/font-5.ttf",
+    "bytes": 95096,
+    "sha256": "6bad1a774228464cc88b8b0271555b266f7a3c64a7bedf15e165fdab4f6ac0ce"
+  },
+  {
+    "path": "dist/assets/font-6.ttf",
+    "bytes": 94928,
+    "sha256": "b9584e099e0e7f1e1e914c3037aabb9010c50346a3ce8df5eeeeecc0563044d8"
+  },
+  {
+    "path": "dist/assets/font-7.ttf",
+    "bytes": 95688,
+    "sha256": "b8f802f05b322a7345805f5b89f8bb976604cc719a91530918d5ce3c47160950"
+  },
+  {
+    "path": "dist/assets/fonts.css",
+    "bytes": 1227,
+    "sha256": "f4d44b5055b91060950c37c1cb810cd536887ed1ac305fea27a89054d57be96b"
+  },
+  {
+    "path": "dist/assets/hero-stock.jpg",
+    "bytes": 473578,
+    "sha256": "1634b25c168ff3149a0215e6c082d84c250b306e9707e9e0f2abc6455dc8906b"
+  },
+  {
+    "path": "dist/assets/hero.jpg",
+    "bytes": 193872,
+    "sha256": "cbe4ef8fe32fdfbb89eac953ac8faf96f6bb9f2f20beacc8dea90a60c0bf11f7"
+  },
+  {
+    "path": "dist/assets/repairs/bronco-after.jpg",
+    "bytes": 437236,
+    "sha256": "e81ad0253e75d7b37ee933453d1da01a6df2eb46b6849692879014ee94c25a5f"
+  },
+  {
+    "path": "dist/assets/repairs/bronco-before.jpg",
+    "bytes": 251653,
+    "sha256": "7df6bd1e1f9bd657652a5f862147bcb227171f7acfcdd048a72b08743e963530"
+  },
+  {
+    "path": "dist/assets/repairs/mustang-after.jpg",
+    "bytes": 434747,
+    "sha256": "8407f5d8533f3a7ab5562071033f8130056eeda3954ba3ef08f9fcc77fe75f74"
+  },
+  {
+    "path": "dist/assets/repairs/mustang-before.jpg",
+    "bytes": 244933,
+    "sha256": "3b78d19094c4ca266d5493ca1997aacf70f327f90f239eb96020232e078633c2"
+  },
+  {
+    "path": "dist/assets/shop-exterior.png",
+    "bytes": 3841830,
+    "sha256": "c838fa5e1eee7fbbf31d07746b10d7b5d39f4338739f60cd3020d5bdd98aa04b"
+  },
+  {
+    "path": "dist/assets/somi-brand.png",
+    "bytes": 1801773,
+    "sha256": "8a8032b0376d4cb31e864d4dd6d05eb6281d38b4cfcc869ef73c0efb5a329e37"
+  },
+  {
+    "path": "dist/assets/somi-logo.jpg",
+    "bytes": 9305,
+    "sha256": "2f0cd2c036ced8fc2c1442fdafe70da1adbbeeada6a3aa51206620e6f2230584"
+  },
+  {
+    "path": "dist/brand.css",
+    "bytes": 16094,
+    "sha256": "58c8bb70ebcbc3cd3f6f78ff574f5c23cb898bea5946749a70459504f949acc7"
+  },
+  {
+    "path": "dist/es/index.html",
+    "bytes": 29550,
+    "sha256": "e4f9682c5ab0cee3f54cb8cb8279d01a7a981a54cf9f67382a55991e99644051"
+  },
+  {
+    "path": "dist/es/insurance-claims/index.html",
+    "bytes": 8801,
+    "sha256": "ad0d01cc53175812bffcdcb60de273ddac5f6a7e09ec35f9af54242806096335"
+  },
+  {
+    "path": "dist/es/services/body-dent-repair/index.html",
+    "bytes": 8416,
+    "sha256": "1d39767abb0631f5a15e347280f01d5107c49216874494e704d56d78eb41def3"
+  },
+  {
+    "path": "dist/es/services/collision-repair/index.html",
+    "bytes": 8450,
+    "sha256": "59f0539e4b9d9e05505a0350a6729fa7e0dd23925e618777e0caced1b35a6858"
+  },
+  {
+    "path": "dist/es/services/glass-detailing/index.html",
+    "bytes": 8419,
+    "sha256": "3299b4c74534d0f9fa3591362cc66cadf6c8c254b2963f4525c0cdc34be3fd0a"
+  },
+  {
+    "path": "dist/es/services/paint-refinishing/index.html",
+    "bytes": 8385,
+    "sha256": "a804cd88fb9c4b946b36b6f4d4c96bea19f710f9de380b73d7152fb02414b7a2"
+  },
+  {
+    "path": "dist/index.html",
+    "bytes": 28639,
+    "sha256": "cabfe15dee8e99d38bd72651b9f85ec64ca207f15f011a858a4a706a4bec97a8"
+  },
+  {
+    "path": "dist/insurance-claims/index.html",
+    "bytes": 8553,
+    "sha256": "e43a80db0cb157aa0da515f5995d353b82f85ff8e0f8e1e3268c3888e9165213"
+  },
+  {
+    "path": "dist/robots.txt",
+    "bytes": 92,
+    "sha256": "e4de92d33d0dd99c6ab4b73cff32b00df56cf21bbeaf789fc4d0befa8746594a"
+  },
+  {
+    "path": "dist/services/body-dent-repair/index.html",
+    "bytes": 8168,
+    "sha256": "fa5bdc6a15e1e2e477b5583102c580ea7e14f64ecd0508daecbd8d3fca2d31c8"
+  },
+  {
+    "path": "dist/services/collision-repair/index.html",
+    "bytes": 8228,
+    "sha256": "963b7ec1cc9aaa88739a4526b069718afa286c013129ec33eeb967ae5a2babf3"
+  },
+  {
+    "path": "dist/services/glass-detailing/index.html",
+    "bytes": 8196,
+    "sha256": "5271f55ed1e35c2053ab8890df0d304c4a831b9b2c67c324532de8ac0ed87469"
+  },
+  {
+    "path": "dist/services/paint-refinishing/index.html",
+    "bytes": 8237,
+    "sha256": "1c2ae6424edf575520e1f8ed7b56f34be68e58d6ef0d43c1aa706d43ab8f23d2"
+  },
+  {
+    "path": "dist/site-config.json",
+    "bytes": 74,
+    "sha256": "14c0f519911ab326a4bf7950c71cf87b2d73906f0b066a632cc7f3d20e2a588c"
+  },
+  {
+    "path": "dist/sitemap.xml",
+    "bytes": 1209,
+    "sha256": "1cf986258e66f565cba090ce7d0bcff161fe7d7eac15cb4586feab212f21082e"
+  },
+  {
+    "path": "dist/styles.css",
+    "bytes": 30761,
+    "sha256": "a408b5071cc38cf0d65ae0ffbbb52a7e6efd5092b2aa79be790f41d1f1965d40"
+  },
+  {
+    "path": "dist/updates.css",
+    "bytes": 9609,
+    "sha256": "4b2a8aab561cc91aaeda6d3b630e0a9cdea75e8538623e6bd71d2aa588415d5f"
+  },
+  {
+    "path": "scripts/build-site.py",
+    "bytes": 40574,
+    "sha256": "194fcdc68d2382182a941b72cbb277b16f78aedfdb3d3d2f0169afb0767f11bd"
+  },
+  {
+    "path": "scripts/repair_gallery.py",
+    "bytes": 6677,
+    "sha256": "fae360d4c1bb2eca869f472f2220023fde995d4bece7d894cc817aa0b1ab9084"
+  }
+]
