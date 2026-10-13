@@ -81,7 +81,7 @@ canonical origin) rewritten, leaving `dist/` untouched.
 
 ### GitHub Pages
 
-`.github/workflows/pages.yml` publishes the site to `https://3gjcob.github.io/SOMI-Coachworks/`
+`.github/workflows/pages.yml` publishes the site to `https://jacobkalka.github.io/SOMI-Coachworks/`
 on every push to the default branch (or `main`), using `scripts/build-pages.py`. One-time setup:
 **Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the workflow
 from the Actions tab.
