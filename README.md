@@ -75,8 +75,16 @@ Upload the **contents of `dist/`** as the root of a domain or subdomain on any s
 - Directory index: `index.html`; unknown routes should 404 — no SPA rewrite to the homepage
 - No environment variables, secrets or server runtime
 
-The site must sit at a domain root because asset and page links are root-relative (`/assets/…`,
-`/es/…`); a project subpath such as `username.github.io/SOMI-Coachworks/` would break them.
+`dist/` must sit at a domain root because asset and page links are root-relative (`/assets/…`,
+`/es/…`). For a subpath host, `scripts/build-pages.py` writes a copy with those links (and the
+canonical origin) rewritten, leaving `dist/` untouched.
+
+### GitHub Pages
+
+`.github/workflows/pages.yml` publishes the site to `https://3gjcob.github.io/SOMI-Coachworks/`
+on every push to the default branch (or `main`), using `scripts/build-pages.py`. One-time setup:
+**Settings → Pages → Build and deployment → Source: GitHub Actions**, then re-run the workflow
+from the Actions tab.
 
 Before going live on a new domain, change `ORIGIN` in `scripts/build-site.py` (currently
 `https://somicoachworks.jkalka28227.chatgpt.site`, no trailing slash) and rebuild — it updates
