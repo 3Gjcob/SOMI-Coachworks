@@ -40,12 +40,16 @@ jobs:
         run: |
           echo "Pages settings:"
           gh api "repos/${{ github.repository }}/pages" --jq '{html_url, cname, custom_404, https_enforced, build_type}' || true
+          url="https://${PAGE_URL#*://}"
           for i in 1 2 3 4 5 6; do
-            echo "Request $i: $PAGE_URL"
-            curl -sS -o /dev/null -D - "$PAGE_URL" | grep -iE '^(HTTP|location)' || true
-            code=$(curl -sS -o /dev/null -w '%{http_code}' "$PAGE_URL" || true)
-            [ "$code" = 200 ] && exit 0
+            echo "Request $i: $url"
+            curl -sS -o /dev/null -D - "$url" | grep -iE '^(HTTP|location)' || true
+            code=$(curl -sS -o /dev/null -w '%{http_code}' "$url" || true)
+            if [ "$code" = 200 ]; then
+              curl -sS "$url" | grep -o '<title>[^<]*</title>'
+              exit 0
+            fi
             sleep 10
           done
-          echo "::error::$PAGE_URL did not return 200 (last status $code); see redirect above"
+          echo "::error::$url did not return 200 (last status $code); see redirect above"
           exit 1
