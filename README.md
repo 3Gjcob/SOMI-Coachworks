@@ -96,6 +96,15 @@ canonical/hreflang URLs, social-share metadata, structured data, sitemap and rob
 
 See `docs/migration/SETUP_AND_HOSTING.md` for the full cutover checklist and an NGINX example.
 
+## Search and security
+
+- **Structured data (JSON-LD):** every page describes the business (`AutoBodyShop`: address, hours, phone, languages, service area, services offered), the website and the page. The homepage adds an `FAQPage` built from the visible FAQs; service pages add `Service` and `BreadcrumbList`. Edit these in `business()`, `head()`, `home()` and `detail()` in `scripts/build-site.py`. Validate after changes at https://search.google.com/test/rich-results.
+- **Search text:** each page has its own title and meta description (the `SEO` table in `build-site.py`), and the footer lists the areas served. All keyword text is visible on the page. Don't add hidden keyword text; Google treats it as spam.
+- **Not included on purpose:** map coordinates (unverified) and a star-rating aggregate (Google doesn't show self-published ratings for local businesses).
+- **Sitemap:** pairs each English page with its Spanish version (`hreflang`). Submit `sitemap.xml` in Google Search Console once the site is on its final domain.
+- **Security:** every page carries a Content-Security-Policy (only the site's own scripts, styles and fonts; Google for the map; Formspree only if the estimate form is enabled) and a strict referrer policy. There are no inline scripts or event handlers, external links use `rel="noopener noreferrer"`, and `site-config.json` holds no secrets. If you add a new third-party service, add its domain to `CSP` in `build-site.py`.
+- **404 page:** `dist/404.html` (not indexed) is served for unknown addresses on GitHub Pages and most static hosts.
+
 ## Estimate form
 
 The photo-upload estimate form is built but hidden until a verified provider is configured in

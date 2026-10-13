@@ -67,7 +67,7 @@ EN = {
   ['Can you help with towing or a rental?','Call us before arranging a tow so we can confirm where and when to bring the vehicle. Ask about current towing assistance and rental options; rental coverage depends on your insurance policy.'],
   ['How long will my repair take?','The timing depends on the damage, parts and the work required. We’ll discuss the expected schedule after assessing your vehicle. Call us directly for an update on an existing repair.']
  ],
- 'consumer_guide':'Florida consumer guide','claims':'Insurance claims','back':'Back to home','top':'Back to top','footer_line':'5780 SW 68th St · South Miami, FL 33143','footer_cta':'Call about your repair',
+ 'consumer_guide':'Florida consumer guide','claims':'Insurance claims','back':'Back to home','top':'Back to top','footer_line':'5780 SW 68th St · South Miami, FL 33143','footer_areas':'Auto body and collision repair serving South Miami, Coral Gables, Pinecrest, Kendall and Westchester.','footer_cta':'Call about your repair',
  'privacy_title':'Your privacy','privacy_text':'When you call or email the shop, your contact details and any photos are used to respond to your repair inquiry. An online request form, when available, also shares those details with the form provider and the shop. Do not send payment details, identification documents or unnecessary personal information.','privacy_more':'Google Maps and Instagram have their own privacy policies. This site does not use advertising analytics. For questions about information sent to the shop, contact somicoachworks@gmail.com.',
  'photo_title':'Photography','photo_text':'The hero image is an automotive stock photograph from Unsplash. It is not presented as a SOMI customer project or the shop’s premises.','photo_link':'View photo source','close':'Close dialog',
  'claim_title':'Insurance Claim Assistance','claim_intro':'Bring your claim information. We’ll discuss the vehicle assessment and the next steps for the repair.',
@@ -123,7 +123,7 @@ ES = {
   ['¿Me pueden ayudar con una grúa o un auto de alquiler?','Llámenos antes de coordinar una grúa para confirmar dónde y cuándo recibir el vehículo. Pregunte por la asistencia de grúa y las opciones de alquiler disponibles; la cobertura del alquiler depende de su póliza.'],
   ['¿Cuánto tarda la reparación?','El plazo depende de los daños, las piezas y el trabajo necesario. Hablaremos del tiempo previsto después de revisar el vehículo. Para consultar el estado de una reparación, llámenos directamente.']
  ],
- 'consumer_guide':'Guía de Florida para consumidores (inglés)','claims':'Reclamos de seguros','back':'Volver al inicio','top':'Volver arriba','footer_line':'5780 SW 68th St · South Miami, FL 33143','footer_cta':'Llame por su reparación',
+ 'consumer_guide':'Guía de Florida para consumidores (inglés)','claims':'Reclamos de seguros','back':'Volver al inicio','top':'Volver arriba','footer_line':'5780 SW 68th St · South Miami, FL 33143','footer_areas':'Carrocería y reparación de choques para South Miami, Coral Gables, Pinecrest, Kendall y Westchester.','footer_cta':'Llame por su reparación',
  'privacy_title':'Su privacidad','privacy_text':'Cuando llama o escribe al taller, sus datos de contacto y fotos se usan para responder a su consulta. Un formulario en línea, cuando esté disponible, también comparte esos datos con el proveedor del formulario y el taller. No envíe datos de pago, documentos de identidad ni información personal innecesaria.',
  'privacy_more':'Google Maps e Instagram tienen sus propias políticas de privacidad. Este sitio no usa analítica publicitaria. Si tiene preguntas sobre datos enviados al taller, escriba a somicoachworks@gmail.com.',
  'photo_title':'Fotografía','photo_text':'La imagen principal es una fotografía de automóviles de Unsplash. No se presenta como un trabajo de SOMI ni como una imagen de sus instalaciones.','photo_link':'Ver fuente de la foto','close':'Cerrar ventana',
@@ -143,12 +143,68 @@ def logo(home, white=False):
  src = '/assets/somi-logo-white.png' if white else '/assets/somi-logo.png'
  return f'<a class="wordmark brand-mark" href="{home}#top" aria-label="Somi Coach Works — home"><img src="{src}" alt="SoMi Coach Works — We Meet By Accident" width="520" height="297"></a>'
 
-def head(d, path='', detail=None):
+AREAS = ['South Miami','Coral Gables','Pinecrest','Kendall','Westchester']
+
+# Page-specific titles and meta descriptions (visible in search results).
+SEO = {
+ 'en': {
+  'collision-repair': ('Collision Repair in South Miami, FL', 'Collision repair in South Miami, FL. We assess accident damage, plan the repair with you and help with insurance claims. Free estimates: (305) 397-8911.'),
+  'paint-refinishing': ('Auto Paint & Refinishing in South Miami, FL', 'Auto paint and refinishing in South Miami, FL: scratches, paint damage and panel refinishing for all makes and models. Free estimates: (305) 397-8911.'),
+  'body-dent-repair': ('Body & Dent Repair in South Miami, FL', 'Body and dent repair in South Miami, FL for dents, scrapes and damaged panels. We inspect the damage and explain your options. Call (305) 397-8911.'),
+  'glass-detailing': ('Auto Glass, Detailing & Headlight Restoration in South Miami', 'Auto glass replacement, detailing and headlight restoration in South Miami, FL. Ask South Miami Coach Works about your vehicle: (305) 397-8911.'),
+  'insurance-claims': ('Insurance Claim Help for Auto Body Repair in South Miami', 'Insurance claim help for collision and auto body repair in South Miami, FL. What to bring, your choice of shop in Florida, and next steps.'),
+ },
+ 'es': {
+  'collision-repair': ('Reparación de choques en South Miami, FL', 'Reparación de choques en South Miami, FL. Evaluamos los daños, planificamos la reparación y le ayudamos con el seguro. Estimados gratis: (305) 397-8911.'),
+  'paint-refinishing': ('Pintura y acabado de autos en South Miami, FL', 'Pintura y acabado de autos en South Miami, FL: rayones, daños en la pintura y paneles, todas las marcas. Estimados gratis: (305) 397-8911.'),
+  'body-dent-repair': ('Carrocería y abolladuras en South Miami, FL', 'Reparación de carrocería y abolladuras en South Miami, FL: golpes, roces y paneles dañados. Revisamos el daño y le explicamos las opciones.'),
+  'glass-detailing': ('Cristales, limpieza detallada y faros en South Miami', 'Reemplazo de cristales, limpieza detallada y restauración de faros en South Miami, FL. Consulte a South Miami Coach Works: (305) 397-8911.'),
+  'insurance-claims': ('Ayuda con reclamos de seguro en South Miami, FL', 'Ayuda con reclamos de seguro para reparación de choques y carrocería en South Miami, FL. Qué traer, cómo elegir taller en Florida y próximos pasos.'),
+ },
+}
+
+# Security policy for a static site: only this site's own scripts, styles and fonts;
+# Google for the map frame; Formspree only if the estimate form is ever enabled.
+CSP = ("default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; "
+       "connect-src 'self' https://formspree.io; frame-src https://www.google.com https://maps.google.com; "
+       "form-action 'self' https://formspree.io; base-uri 'self'; object-src 'none'; upgrade-insecure-requests")
+
+def business():
+ return {'@type':'AutoBodyShop','@id':ORIGIN+'/#business','name':'South Miami Coach Works','alternateName':['SOMI Coachworks','Somi Coach Works'],
+  'description':'Auto body shop in South Miami, FL offering collision repair, paint and refinishing, body and dent repair, auto glass and detailing, with insurance claim assistance. Se habla español.',
+  'url':ORIGIN+'/','logo':ORIGIN+'/assets/somi-logo.png','image':[ORIGIN+'/assets/shop-share.jpg',ORIGIN+'/assets/shop-exterior.jpg'],
+  'telephone':'+1-305-397-8911','email':'somicoachworks@gmail.com',
+  'address':{'@type':'PostalAddress','streetAddress':'5780 SW 68th St','addressLocality':'South Miami','addressRegion':'FL','postalCode':'33143','addressCountry':'US'},
+  'hasMap':MAP,
+  'openingHoursSpecification':[{'@type':'OpeningHoursSpecification','dayOfWeek':['Monday'],'opens':'07:30','closes':'17:00'},{'@type':'OpeningHoursSpecification','dayOfWeek':['Tuesday','Wednesday','Thursday','Friday'],'opens':'07:30','closes':'17:30'}],
+  'areaServed':[{'@type':'City','name':a,'containedInPlace':{'@type':'State','name':'Florida'}} for a in AREAS],
+  'knowsLanguage':['en','es'],
+  'contactPoint':{'@type':'ContactPoint','telephone':'+1-305-397-8911','contactType':'customer service','availableLanguage':['English','Spanish'],'areaServed':'US'},
+  'makesOffer':[{'@type':'Offer','itemOffered':{'@type':'Service','@id':ORIGIN+'/services/'+slug+'/#service','name':name}} for slug,name in [('collision-repair','Collision repair'),('paint-refinishing','Auto paint and refinishing'),('body-dent-repair','Body and dent repair'),('glass-detailing','Auto glass, detailing and headlight restoration')]],
+  'sameAs':[IG,MAP]}
+ # Geo coordinates and aggregateRating are intentionally omitted: coordinates are unverified,
+ # and Google does not show self-published review ratings for a local business.
+
+def ld(nodes):
+ # Escape "</" so structured data can never close the script element early.
+ return json.dumps({'@context':'https://schema.org','@graph':nodes},ensure_ascii=False).replace('</','<\\/')
+
+def head(d, path='', detail=None, desc=None, extra=(), noindex=False):
  url=ORIGIN+d['home']+path
  title=(detail or d['title'])+' | South Miami Coach Works'
- schema={'@context':'https://schema.org','@type':'AutoBodyShop','@id':ORIGIN+'/#business','name':'South Miami Coach Works','alternateName':['SOMI Coachworks','Somi Coach Works'],'url':ORIGIN+'/','image':ORIGIN+'/assets/somi-logo.png','telephone':'+1-305-397-8911','email':'somicoachworks@gmail.com','address':{'@type':'PostalAddress','streetAddress':'5780 SW 68th St','addressLocality':'South Miami','addressRegion':'FL','postalCode':'33143','addressCountry':'US'},'openingHoursSpecification':[{'@type':'OpeningHoursSpecification','dayOfWeek':['Monday'],'opens':'07:30','closes':'17:00'},{'@type':'OpeningHoursSpecification','dayOfWeek':['Tuesday','Wednesday','Thursday','Friday'],'opens':'07:30','closes':'17:30'}],'areaServed':['South Miami','Coral Gables','Pinecrest','Kendall','Westchester'],'sameAs':[IG,MAP],'availableLanguage':['English','Spanish']}
- # Geo coordinates and aggregateRating are intentionally omitted until verified/current.
- return f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#082451"><title>{escape(title)}</title><meta name="description" content="{escape(d['description'],quote=True)}"><link rel="canonical" href="{url}"><link rel="alternate" hreflang="en" href="{ORIGIN}/{path}"><link rel="alternate" hreflang="es" href="{ORIGIN}/es/{path}"><link rel="alternate" hreflang="x-default" href="{ORIGIN}/{path}"><meta property="og:title" content="{escape(title,quote=True)}"><meta property="og:description" content="{escape(d['description'],quote=True)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta property="og:image" content="{ORIGIN}/assets/shop-share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="South Miami Coach Works shop exterior at 5780 SW 68th St"><meta property="og:locale" content="{'es_US' if d['lang']=='es' else 'en_US'}"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/icon-180.png"><link rel="preload" href="/assets/fonts/archivo-latin-wdth.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/fonts/fonts.css"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/updates.css"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/polish.css"><script src="/app.js" defer></script><script id="site-copy" type="application/json">{json.dumps({k:d[k] for k in ['lang','hours_open','hours_closed','form_error','form_success','form_sending','submit','form_invalid','form_phone_error','form_photo_count']},ensure_ascii=False)}</script><script type="application/ld+json">{json.dumps(schema,ensure_ascii=False)}</script></head><body id="top"><a class="skip-link" href="#main">{d['skip']}</a>'''
+ desc=desc or d['description']
+ lang='es-US' if d['lang']=='es' else 'en-US'
+ nodes=[business(),
+  {'@type':'WebSite','@id':ORIGIN+'/#website','url':ORIGIN+'/','name':'South Miami Coach Works','inLanguage':['en-US','es-US'],'publisher':{'@id':ORIGIN+'/#business'}},
+  {'@type':'WebPage','@id':url+'#webpage','url':url,'name':title,'description':desc,'inLanguage':lang,'isPartOf':{'@id':ORIGIN+'/#website'},'about':{'@id':ORIGIN+'/#business'},'primaryImageOfPage':ORIGIN+'/assets/shop-share.jpg'},
+  *extra]
+ links=('<meta name="robots" content="noindex">' if noindex else
+  f'<meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="{url}"><link rel="alternate" hreflang="en" href="{ORIGIN}/{path}"><link rel="alternate" hreflang="es" href="{ORIGIN}/es/{path}"><link rel="alternate" hreflang="x-default" href="{ORIGIN}/{path}">')
+ copy=json.dumps({k:d[k] for k in ['lang','hours_open','hours_closed','form_error','form_success','form_sending','submit','form_invalid','form_phone_error','form_photo_count']},ensure_ascii=False).replace('</','<\\/')
+ return f'''<!doctype html><html lang="{d['lang']}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="{CSP}"><meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#0c1e3c"><title>{escape(title)}</title><meta name="description" content="{escape(desc,quote=True)}">{links}<meta property="og:site_name" content="South Miami Coach Works"><meta property="og:title" content="{escape(title,quote=True)}"><meta property="og:description" content="{escape(desc,quote=True)}"><meta property="og:type" content="website"><meta property="og:url" content="{url}"><meta property="og:image" content="{ORIGIN}/assets/shop-share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="South Miami Coach Works shop exterior at 5780 SW 68th St"><meta property="og:locale" content="{'es_US' if d['lang']=='es' else 'en_US'}"><meta property="og:locale:alternate" content="{'en_US' if d['lang']=='es' else 'es_US'}"><meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/icon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/assets/icon-180.png"><link rel="preload" href="/assets/fonts/archivo-latin-wdth.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/inter-latin-wght.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/fonts/fonts.css"><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/updates.css"><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/polish.css"><script src="/app.js" defer></script><script id="site-copy" type="application/json">{copy}</script><script type="application/ld+json">{ld(nodes)}</script></head><body id="top"><a class="skip-link" href="#main">{d['skip']}</a>'''
+
+def breadcrumbs(d, items):
+ return {'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':i+1,'name':n,'item':ORIGIN+u} for i,(n,u) in enumerate(items)]}
 
 def header(d,path=''):
  links=''.join(f'<a href="{d["home"]}#{a}">{d[b]}</a>' for a,b in [('services','services'),('work','work'),('about','about'),('reviews','reviews'),('visit','visit')])
@@ -156,7 +212,7 @@ def header(d,path=''):
 
 def footer(d):
  links=''.join(f'<a href="{d["home"]}{path}">{label}</a>' for path,label in [('#services',d['services']),('#about',d['about']),('#reviews',d['reviews']),('insurance-claims/',d['claims'])])
- return f'''<footer class="footer"><div class="container"><div class="footer-top">{logo(d['home'], True)}<p>{d['footer_line']}<br>South Miami Coach Works</p><a class="footer-cta" href="tel:+13053978911">{d['footer_cta']}</a></div><div class="footer-links">{links}<a href="{IG}" target="_blank" rel="noopener noreferrer">Instagram</a><a href="tel:+13053978911">(305) 397-8911</a><a href="mailto:somicoachworks@gmail.com">somicoachworks@gmail.com</a></div><div class="footer-bottom"><span>© <span id="copyright-year">2026</span> South Miami Coach Works.</span><button type="button" data-open-dialog="privacy-dialog">{d['privacy']}</button><a href="#top" class="back-top">{d['top']}</a></div></div></footer><div class="mobile-actions"><a href="tel:+13053978911">{d['call']}</a><a href="{d['home']}#estimate">{d['estimate']}</a></div><dialog id="privacy-dialog" aria-labelledby="privacy-title"><div class="dialog-header"><h2 id="privacy-title">{d['privacy_title']}</h2><button class="dialog-close" type="button" aria-label="{d['close']}">×</button></div><p>{d['privacy_text']}</p><p>{d['privacy_more']}</p></dialog></body></html>'''
+ return f'''<footer class="footer"><div class="container"><div class="footer-top">{logo(d['home'], True)}<p>{d['footer_line']}<br>{d['footer_areas']}</p><a class="footer-cta" href="tel:+13053978911">{d['footer_cta']}</a></div><div class="footer-links">{links}<a href="{IG}" target="_blank" rel="noopener noreferrer">Instagram</a><a href="tel:+13053978911">(305) 397-8911</a><a href="mailto:somicoachworks@gmail.com">somicoachworks@gmail.com</a></div><div class="footer-bottom"><span>© <span id="copyright-year">2026</span> South Miami Coach Works.</span><button type="button" data-open-dialog="privacy-dialog">{d['privacy']}</button><a href="#top" class="back-top">{d['top']}</a></div></div></footer><div class="mobile-actions"><a href="tel:+13053978911">{d['call']}</a><a href="{d['home']}#estimate">{d['estimate']}</a></div><dialog id="privacy-dialog" aria-labelledby="privacy-title"><div class="dialog-header"><h2 id="privacy-title">{d['privacy_title']}</h2><button class="dialog-close" type="button" aria-label="{d['close']}">×</button></div><p>{d['privacy_text']}</p><p>{d['privacy_more']}</p></dialog></body></html>'''
 
 def form(d):
  fields=''
@@ -168,7 +224,8 @@ def form(d):
  return f'''<div id="online-request" hidden><h3>{d['form_title']}</h3><p>{d['form_intro']}</p><form id="estimate-form" enctype="multipart/form-data"><div class="field-grid">{fields}</div><label for="service">{d['service']} *</label><select id="service" name="service" required><option value="">{d['select']}</option>{options}<option value="other">{d['other_service']}</option></select><label for="details">{d['details']} *</label><textarea id="details" name="details" rows="4" maxlength="2000" required></textarea><label for="insurance">{d['insurance']}</label><input id="insurance" name="insurance" maxlength="100"><label for="photos">{d['photos']}</label><input type="file" id="photos" name="attachment" accept="image/jpeg,image/png,image/webp" multiple aria-describedby="photo-help"><p id="photo-help" class="form-disclosure">{d['photo_help']}</p><div id="photo-previews" class="photo-previews"></div><label class="consent"><input type="checkbox" name="consent" value="yes" required><span>{d['consent']}</span></label><div class="honeypot" aria-hidden="true"><label for="website">Website</label><input id="website" name="_gotcha" tabindex="-1" autocomplete="off"></div><button class="button button-red form-next" id="submit-request" type="submit">{d['submit']}</button><p id="form-status" role="status" aria-live="polite" tabindex="-1"></p><p class="form-disclosure">{d['form_privacy']}</p></form></div>'''
 
 def home(d):
- h=head(d)+header(d)+'<main id="main">'
+ faq={'@type':'FAQPage','@id':ORIGIN+d['home']+'#faq','inLanguage':'es-US' if d['lang']=='es' else 'en-US','mainEntity':[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in d['faqs']]}
+ h=head(d,extra=[faq])+header(d)+'<main id="main">'
  h+=f'''<section class="hero" aria-labelledby="hero-title"><picture class="hero-picture"><source srcset="/assets/shop-exterior.webp" type="image/webp"><img class="hero-photo" src="/assets/shop-exterior.jpg" alt="{'Fachada y estacionamiento de South Miami Coach Works en 5780 SW 68th St' if d['lang']=='es' else 'South Miami Coach Works exterior and front parking lot at 5780 SW 68th St'}" width="1525" height="1031" fetchpriority="high"></picture><div class="hero-shade"></div><div class="container hero-content"><h1 id="hero-title">{d['hero']}</h1><p class="hero-description">{d['hero_copy']}</p><div class="hero-actions">{button(d['call'],'tel:+13053978911')}{button(d['estimate'],'#estimate','outline')}</div><a class="hero-proof" href="{MAP}" target="_blank" rel="noopener noreferrer"><span class="stars" aria-hidden="true">★★★★★</span><span>{d['rating']}</span></a></div></section><div class="trust-strip"><div class="container trust-inner">{''.join('<span>'+icon(k)+x+'</span>' for k,x in zip(['estimate','makes','insurance','language'],d['trust']))}</div></div>'''
  h+=f'''<section class="section services-section" id="services"><div class="container"><div class="section-heading"><div><h2>{d['services_title']}</h2></div><p>{d['services_intro']}</p></div><div class="service-card-grid">'''
  for s in d['service_data']:
@@ -190,7 +247,13 @@ def detail(d,s=None):
  path='services/'+s[0]+'/' if s else 'insurance-claims/'
  title=s[1] if s else d['claims']
  intro=s[2] if s else d['claim_intro']
- h=head(d,path,title+' — South Miami')+header(d,path)+f'<main id="main"><section class="detail-hero"><div class="container"><a class="text-link light" href="{d["home"]}">{d["back"]}</a><h1>{escape(title)}</h1><p>{intro}</p>{button(d["call"],"tel:+13053978911")}</div></section><section class="section"><div class="container detail-body">'
+ slug=s[0] if s else 'insurance-claims'
+ seo_title,seo_desc=SEO[d['lang']][slug]
+ home_name='Inicio' if d['lang']=='es' else 'Home'
+ crumbs=[(home_name,d['home'])]+([(d['services'],d['home']+'#services')] if s else [])+[(title,d['home']+path)]
+ extra=[breadcrumbs(d,crumbs)]
+ if s: extra.append({'@type':'Service','@id':ORIGIN+d['home']+path+'#service','name':title,'serviceType':title,'description':s[2],'provider':{'@id':ORIGIN+'/#business'},'areaServed':[{'@type':'City','name':a} for a in AREAS],'url':ORIGIN+d['home']+path,'inLanguage':'es-US' if d['lang']=='es' else 'en-US'})
+ h=head(d,path,seo_title,seo_desc,extra)+header(d,path)+f'<main id="main"><section class="detail-hero"><div class="container"><a class="text-link light" href="{d["home"]}">{d["back"]}</a><h1>{escape(title)}</h1><p>{intro}</p>{button(d["call"],"tel:+13053978911")}</div></section><section class="section"><div class="container detail-body">'
  if s:h+=f'<p class="detail-tags">{s[3]}</p><p>{s[4]}</p><p>{s[5]}</p>'
  else:
   for t,p in d['claim_sections']:h+=f'<h2>{t}</h2><p>{p}</p>'
@@ -206,6 +269,12 @@ for d in (EN,ES):
  paths.append(d['home'])
  for s in [*d['service_data'],None]:
   path,html=detail(d,s);target=base/path;target.mkdir(parents=True,exist_ok=True);(target/'index.html').write_text(html);paths.append(d['home']+path)
-(DIST/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>'+ORIGIN+p+'</loc></url>' for p in paths)+'</urlset>\n')
+def not_found(d):
+ msg={'title':'Page not found','h1':'Page not found','p':'The page you’re looking for doesn’t exist or has moved.'}
+ return head(d,'',msg['title'],msg['p'],noindex=True)+header(d)+f'''<main id="main"><section class="detail-hero"><div class="container"><h1>{msg['h1']}</h1><p>{msg['p']} <span lang="es">La página que busca no existe o cambió de dirección.</span></p>{button(d['call'],'tel:+13053978911')} <a class="button button-outline" href="/">Home</a> <a class="button button-outline" href="/es/" lang="es">Inicio en español</a></div></section></main>'''+footer(d)
+(DIST/'404.html').write_text(not_found(EN))
+pairs=[p for p in paths if not p.startswith('/es/')]
+def alt(p): return ''.join(f'<xhtml:link rel="alternate" hreflang="{l}" href="{ORIGIN}{u}"/>' for l,u in [('en',p),('es','/es'+p),('x-default',p)])
+(DIST/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'+''.join(f'<url><loc>{ORIGIN}{u}</loc>{alt(p)}</url>' for p in pairs for u in (p,'/es'+p))+'</urlset>\n')
 (DIST/'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: '+ORIGIN+'/sitemap.xml\n')
 print('Built',len(paths),'pages with matching English/Spanish routes, canonical links and sitemap.')

@@ -13,7 +13,9 @@
   menu.addEventListener('click', () => setMenu(nav.hidden));
   nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !nav.hidden) { setMenu(false); menu.focus(); } });
-  window.matchMedia('(min-width: 901px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
+  const wide = window.matchMedia('(min-width: 901px)'), onWide = e => { if (e.matches) setMenu(false); };
+  // Safari before 14 only supports the older addListener API.
+  if (wide.addEventListener) wide.addEventListener('change', onWide); else wide.addListener(onWide);
   const updateHours = () => {
     if (!$('#hours-status')) return;
     const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {timeZone:'America/New_York',weekday:'short',hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(new Date()).map(p => [p.type,p.value]));
@@ -107,6 +109,12 @@
     lightbox.addEventListener('close', () => document.body.classList.remove('lightbox-open'));
   }
 
+  // AbortSignal.timeout is missing before Safari 16; fall back to a timed AbortController.
+  const timeoutSignal = ms => {
+    if (AbortSignal.timeout) return AbortSignal.timeout(ms);
+    const controller = new AbortController(); setTimeout(() => controller.abort(), ms); return controller.signal;
+  };
+
   // Do not accept leads without a verified, shop-owned destination.
   const form = $('#estimate-form');
   if (!form) return;
@@ -153,7 +161,7 @@
     const data = new FormData(form); data.set('_subject','SOMI — Estimate request'); data.set('language',copy.lang);
     if (!$('#photos').files.length) data.delete('attachment');
     try {
-      const response = await fetch(endpoint, {method:'POST',headers:{Accept:'application/json'},body:data,signal:AbortSignal.timeout(45000)});
+      const response = await fetch(endpoint, {method:'POST',headers:{Accept:'application/json'},body:data,signal:timeoutSignal(45000)});
       const result = await response.json();
       if (!response.ok || result.ok !== true) throw new Error('Submission not confirmed');
       status.textContent = copy.form_success; status.className = 'success';
