@@ -3,8 +3,8 @@ from html import escape
 
 CONTENT = {
  'en': {
-  'eyebrow':'THE WORK, UP CLOSE', 'title':'EVERY REPAIR<br>HAS A <em>STORY.</em>',
-  'intro':'From the damage that brought it in to the finish that takes it home. Explore two repairs from our shop.',
+  'eyebrow':'', 'title':'Recent Repairs',
+  'intro':'Before and after photos from two recent jobs at the shop.',
   'tabs':'Choose a repair story', 'case':'REPAIR STORY', 'before':'Before', 'after':'After', 'both':'Side by side',
   'view':'Choose a photo view', 'expand':'View full photo', 'close':'Close photo viewer',
   'arrival':'HOW IT ARRIVED', 'return':'HOW IT LEFT', 'hint':'Choose a vehicle. Open either photo for a closer look.',
@@ -16,8 +16,8 @@ CONTENT = {
   ]
  },
  'es': {
-  'eyebrow':'EL TRABAJO, DE CERCA','title':'CADA REPARACIÓN<br>TIENE SU <em>HISTORIA.</em>',
-  'intro':'Desde los daños con los que llegó hasta el acabado con el que se va. Conozca dos reparaciones de nuestro taller.',
+  'eyebrow':'','title':'Trabajos recientes',
+  'intro':'Fotos de antes y después de dos trabajos recientes del taller.',
   'tabs':'Elija una reparación','case':'HISTORIA DE REPARACIÓN','before':'Antes','after':'Después','both':'Lado a lado',
   'view':'Elija una vista','expand':'Ver foto completa','close':'Cerrar visor de fotos',
   'arrival':'ASÍ LLEGÓ','return':'ASÍ SALIÓ','hint':'Elija un vehículo. Abra cualquiera de las fotos para verla de cerca.',
@@ -32,18 +32,18 @@ CONTENT = {
 
 def gallery(d):
  c=CONTENT[d['lang']]
- h=f'''<section class="repair-stories section" id="work" aria-labelledby="repair-title"><div class="container"><div class="repair-heading"><div><p class="eyebrow dark"><span class="red-line"></span>{c['eyebrow']}</p><h2 id="repair-title">{c['title']}</h2></div><div class="repair-heading-copy"><p>{c['intro']}</p><span class="repair-hint">{c['hint']}</span></div></div><div class="repair-tabs" role="tablist" aria-label="{c['tabs']}" hidden>'''
+ h=f'''<section class="repair-stories section" id="work" aria-labelledby="repair-title"><div class="container"><div class="repair-heading"><div><h2 id="repair-title">{c['title']}</h2></div><div class="repair-heading-copy"><p>{c['intro']}</p></div></div><div class="repair-tabs" role="tablist" aria-label="{c['tabs']}" hidden>'''
  for n,p in enumerate(c['projects']):
-  h+=f'''<button type="button" role="tab" id="tab-{p['id']}" aria-controls="story-{p['id']}" aria-selected="{'true' if n==0 else 'false'}" tabindex="{0 if n==0 else -1}" data-story-tab="{p['id']}"><span class="tab-thumb"><img src="/assets/repairs/{p['id']}-after.jpg" alt="" width="70" height="60" loading="lazy"></span><span><b>{p['name']}</b><small>{p['tag']}</small></span><span class="tab-index" aria-hidden="true">0{n+1}</span></button>'''
+  h+=f'''<button type="button" role="tab" id="tab-{p['id']}" aria-controls="story-{p['id']}" aria-selected="{'true' if n==0 else 'false'}" tabindex="{0 if n==0 else -1}" data-story-tab="{p['id']}"><span class="tab-thumb"><img src="/assets/repairs/{p['id']}-after.jpg" alt="" width="70" height="60" loading="lazy"></span><span><b>{p['name']}</b><small>{p['tag']}</small></span></button>'''
  h+='</div><div class="repair-deck">'
  for n,p in enumerate(c['projects']):
-  h+=f'''<article class="repair-story" id="story-{p['id']}" aria-label="{p['name']}" data-story="{p['id']}" data-view="both"><div class="story-header"><div><span class="story-kicker">{c['case']} / 0{n+1}</span><h3>{p['name']}<span>{p['tag']}</span></h3></div><div class="view-switch" role="group" aria-label="{c['view']}" hidden>'''
+  h+=f'''<article class="repair-story" id="story-{p['id']}" aria-label="{p['name']}" data-story="{p['id']}" data-view="both"><div class="story-header"><div><h3>{p['name']}<span>{p['tag']}</span></h3></div><div class="view-switch" role="group" aria-label="{c['view']}" hidden>'''
   for mode in ['both','before','after']:
    h+=f'<button type="button" data-view-button="{mode}" aria-pressed="{str(mode=="both").lower()}">{c[mode]}</button>'
   h+='</div></div><div class="photo-pair">'
   for state in ['before','after']:
    w,height=p[state+'_size']; src=f'/assets/repairs/{p["id"]}-{state}.jpg'
-   h+=f'''<figure class="repair-photo {state}" data-photo-state="{state}"><div class="photo-stage"><span>{c['arrival' if state=='before' else 'return']}</span><b>{c[state]}</b></div><a class="photo-open" href="{src}" data-photo-open data-caption="{escape(p['name']+' — '+c[state],quote=True)}" aria-label="{c['expand']}: {p['name']}, {c[state]}"><img src="{src}" alt="{p[state+'_alt']}" width="{w}" height="{height}" loading="lazy" decoding="async"><span class="photo-zoom"><span aria-hidden="true">＋</span> {c['expand']}</span></a><figcaption><span class="caption-dot" aria-hidden="true"></span>{p[state+'_caption']}</figcaption></figure>'''
-  h+=f'''</div><div class="story-footer"><p>{p['note']}</p><a class="text-link" href="{d['home']}#estimate">{c['your_car']}</a></div></article>'''
+   h+=f'''<figure class="repair-photo {state}" data-photo-state="{state}"><div class="photo-stage"><b>{c[state]}</b></div><a class="photo-open" href="{src}" data-photo-open data-caption="{escape(p['name']+' — '+c[state],quote=True)}" aria-label="{c['expand']}: {p['name']}, {c[state]}"><img src="{src}" alt="{p[state+'_alt']}" width="{w}" height="{height}" loading="lazy" decoding="async"><span class="photo-zoom"><span aria-hidden="true">＋</span> {c['expand']}</span></a><figcaption><span class="caption-dot" aria-hidden="true"></span>{p[state+'_caption']}</figcaption></figure>'''
+  h+=f'''</div><div class="story-footer"><a class="text-link" href="{d['home']}#estimate">{c['your_car']}</a></div></article>'''
  h+=f'''</div><div class="repair-more"><span>@somicoachworks</span><a href="https://www.instagram.com/somicoachworks/" target="_blank" rel="noopener noreferrer">{c['more']} <span aria-hidden="true">↗</span></a></div></div></section><dialog class="photo-lightbox" id="repair-lightbox" aria-labelledby="lightbox-title"><div class="lightbox-bar"><h2 id="lightbox-title"></h2><button class="dialog-close" type="button" aria-label="{c['close']}">×</button></div><img id="lightbox-image" alt=""><div class="lightbox-controls"><button type="button" id="lightbox-prev">← {c['previous']}</button><span id="lightbox-count" aria-live="polite"></span><button type="button" id="lightbox-next">{c['next']} →</button></div></dialog>'''
  return h

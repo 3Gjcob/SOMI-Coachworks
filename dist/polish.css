@@ -1,0 +1,209 @@
+/* Polish layer: loaded after brand.css. Calmer headings, readable text sizes,
+   a slimmer header and less decoration. Palette, fonts and layout are unchanged. */
+
+html{scroll-padding-top:96px}
+body{font-size:16px}
+
+/* Top bar and header */
+.utility{font-size:12px;letter-spacing:.2px;font-weight:600}
+.utility strong{letter-spacing:.2px}
+.nav-inner{height:84px}
+.brand-mark,.footer .brand-mark{width:132px;height:72px}
+.desktop-nav{font-size:15px;font-weight:500;gap:32px}
+.language-toggle{font-size:14px}
+.mobile-nav{top:84px}
+
+/* Buttons and links */
+.button{font-size:15px;font-weight:700;min-height:52px;padding:15px 24px}
+.button:hover{transform:none}
+.text-link{font-size:15px}
+
+/* Headings: title case, no stacked all-caps statements */
+h2,.section-heading h2,.approach-top h2,.contact-copy h2,.visit-copy h2,.faq-grid h2,
+.repair-heading h2,.reviews-section .section-heading h2{
+ font-size:clamp(36px,3.4vw,54px);line-height:1.04;letter-spacing:0}
+.section{padding-block:88px}
+.section-heading{margin-bottom:44px;align-items:end}
+.section-heading>p,.repair-heading-copy p{font-size:17px;line-height:1.7;max-width:460px}
+
+/* Hero */
+.hero{height:calc(100svh - 118px);min-height:560px;max-height:780px;display:flex;align-items:center}
+.hero-content{padding-block:40px}
+.hero h1{font-size:clamp(52px,5.4vw,88px);line-height:.98;letter-spacing:0;max-width:820px}
+.hero h1>span:after{display:none}
+.hero-description{font-size:19px;line-height:1.6;max-width:500px;margin-top:22px}
+.hero-actions{margin-top:30px}
+.hero-proof{margin-top:24px;font-size:14px}
+.hero-proof .stars{font-size:15px;letter-spacing:2px}
+
+/* Trust strip */
+.trust-inner{min-height:62px;font-size:14px;font-weight:600;letter-spacing:.1px}
+
+/* Services */
+.service-card{transition:border-color .2s}
+.service-card:hover{transform:none}
+.service-card p{font-size:16px;line-height:1.7}
+.services-footnote>span,.services-footnote>a{font-size:15px}
+
+/* Repair gallery */
+.repair-stories{padding-block:88px}
+.repair-stories:before{display:none}
+.repair-heading{margin-bottom:36px}
+.repair-tabs small{font-size:13px}
+.story-header h3>span{font-size:14px}
+.view-switch>button{font-size:14px}
+.photo-stage{padding:10px 16px;border-bottom:0}
+.photo-stage>b{font-size:22px}
+.photo-zoom{font-size:13px}
+.repair-photo figcaption{font-size:14px}
+.story-footer{justify-content:flex-end}
+.story-footer .text-link{font-size:15px}
+.repair-more,.repair-more>a{font-size:15px}
+
+/* About / process */
+.approach-intro>p:first-child{font-size:20px;line-height:1.6}
+.approach-intro>p:nth-child(2),.process-grid p,.service-area p{font-size:16px;line-height:1.7}
+.process-label h3{font:600 26px/1.1 var(--display);margin:0;color:#fff}
+.process-grid h3{font-size:19px}
+.service-area h3{font-size:19px;white-space:nowrap}
+
+/* Reviews */
+.review-context{font-size:14px}
+.review-card{padding:30px}
+.review-card .stars{font-size:15px;letter-spacing:2px}
+.review-card blockquote{font-size:17px;line-height:1.7;margin:18px 0 24px}
+.review-card figcaption b{display:block;font-size:15px}
+.review-card figcaption small{display:block;font-size:13px;margin-top:2px;color:#5b6f8a}
+.rating-caption{font-size:14px}
+.reviews-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:28px}
+.reviews-bottom .text-link{font-size:15px}
+
+/* Estimate */
+.contact-copy>p:not(.eyebrow){font-size:17px;line-height:1.7;max-width:460px}
+.contact-note p{font-size:14px}
+.estimate-card h3{font-size:32px}
+.estimate-card p{font-size:16px}
+.contact-email{font-size:16px}
+.form-disclosure,.estimate-card .form-disclosure{font-size:14px}
+.map-fallback{font-size:14px}
+.visit-actions .button{font-size:15px}
+
+/* Hours & location */
+.visit-copy address{font-size:17px}
+.hours-card dl>div{font-size:16px}
+.hours-card>p{font-size:14px}
+.hours-status{font-size:13px;font-weight:600;letter-spacing:0;padding:4px 10px;border:0;max-width:none}
+.hours-status.open{background:#e3f4e8;color:#17663a}
+
+/* FAQ */
+summary{font-size:17px}
+details>p{font-size:16px;line-height:1.7}
+
+/* Detail pages */
+.detail-hero h1{text-transform:none;font-size:clamp(44px,5vw,78px);line-height:1.02}
+.detail-hero p:not(.eyebrow){font-size:18px}
+.detail-tags{font-size:15px;font-weight:600;color:#536a88;margin:0 0 18px}
+.detail-body>p:not(.eyebrow){font-size:17px;line-height:1.75}
+.detail-body h2{font-size:clamp(30px,2.8vw,42px)}
+
+/* Footer */
+.footer-cta{font-size:30px}
+.footer-top>p{font-size:14px;line-height:1.7}
+.footer-links{font-size:15px}
+.footer-bottom,.footer-bottom button{font-size:14px}
+.mobile-actions>a{font-size:15px}
+
+@media(max-width:1100px){
+ .brand-mark{width:124px;height:68px}
+ .desktop-nav{gap:22px;font-size:14px}
+ .hero h1{font-size:clamp(50px,6vw,72px)}
+}
+@media(max-width:900px){
+ .nav-inner{height:80px}
+ .brand-mark{width:124px;height:68px}
+ .mobile-nav{top:80px}
+ .hero{height:calc(100svh - 114px)}
+ .hero h1{font-size:60px}
+ .repair-heading h2{font-size:clamp(36px,5vw,46px)}
+}
+@media(max-width:720px){
+ html{scroll-padding-top:84px}
+ .utility{font-size:12px}
+ .utility a strong{font-size:13px}
+ .rating-score .stars{font-size:14px}
+ .visit-actions .button{font-size:14px}
+ .estimate-card .form-disclosure{font-size:13px}
+ .nav-inner{height:72px}
+ .brand-mark{width:108px;height:59px}
+ .footer .brand-mark{width:124px;height:68px}
+ .mobile-nav{top:72px}
+ .language-toggle{font-size:13px}
+ .hero{display:flex;align-items:stretch;height:auto}
+ .hero-content{padding-block:32px 40px}
+ .hero h1{font-size:clamp(40px,11vw,54px);line-height:1}
+ .hero-description{font-size:16px;margin-top:16px}
+ .hero-actions{margin-top:24px}
+ .hero-actions .button{font-size:14px;padding:14px 18px}
+ .hero-proof{font-size:13px;margin-top:20px}
+ .trust-inner{font-size:13px;gap:14px 12px}
+ h2,.section-heading h2,.approach-top h2,.contact-copy h2,.visit-copy h2,.faq-grid h2,
+ .repair-heading h2,.reviews-section .section-heading h2{font-size:clamp(32px,8.6vw,40px)}
+ .section,.repair-stories,.contact-section{padding-block:60px}
+ .section-heading{margin-bottom:28px}
+ .section-heading>p,.repair-heading-copy p{font-size:16px}
+ .service-card p{font-size:15px}
+ .services-footnote>span{font-size:14px}
+ .services-footnote>a{font-size:15px}
+ .repair-tabs b{font-size:22px}
+ .repair-tabs small{font-size:12px}
+ .story-header h3{font-size:30px}
+ .story-header h3>span{font-size:13px}
+ .view-switch>button{font-size:13px}
+ .photo-stage{padding:8px 12px}
+ .photo-stage>b{font-size:19px}
+ .photo-zoom{font-size:12px}
+ .repair-photo figcaption{font-size:13px}
+ .repair-more>span,.repair-more>a,.story-footer .text-link{font-size:14px}
+ .approach-intro>p:first-child{font-size:18px}
+ .approach-intro>p:nth-child(2),.process-grid p,.service-area p{font-size:15px}
+ .service-area h3{white-space:normal}
+ .reviews-section .section-heading{align-items:end}
+ .rating-caption{font-size:13px}
+ .review-card{padding:24px;min-height:0}
+ .review-card blockquote{font-size:16px}
+ .review-context{font-size:13px;margin-top:0}
+ .reviews-bottom{flex-direction:column;align-items:flex-start;gap:14px}
+ .contact-copy>p:not(.eyebrow){font-size:16px}
+ .estimate-card h3{font-size:28px}
+ .estimate-card p{font-size:15px}
+ .hours-card dl>div{font-size:15px}
+ .hours-status{font-size:12px}
+ .hours-card>p{font-size:13px}
+ summary{font-size:16px}
+ details>p{font-size:15px}
+ .detail-hero h1{font-size:clamp(38px,10vw,48px)}
+ .detail-hero p:not(.eyebrow),.detail-body>p:not(.eyebrow){font-size:16px}
+ .detail-body h2{font-size:30px}
+ .footer-cta{font-size:28px}
+ .footer-top>p{font-size:13px}
+ .footer-links{font-size:15px}
+ .footer-bottom,.footer-bottom button{font-size:13px}
+ .mobile-actions>a{font-size:14px}
+}
+@media(max-width:375px){
+ .nav-inner{height:68px}
+ .brand-mark{width:98px;height:54px}
+ .mobile-nav{top:68px}
+ .hero h1{font-size:38px}
+ .repair-heading h2{font-size:32px}
+ .repair-tabs small{font-size:12px}
+ .view-switch>button{font-size:12px;padding:9px 10px}
+ .photo-zoom{font-size:0}
+}
+
+/* Card details */
+.service-card .text-link,.services-section .text-link{font-size:15px}
+.review-card{min-height:0;display:flex;flex-direction:column}
+.review-card figcaption{margin-top:auto}
+.detail-contact p{font-size:15px}
+.detail-hero .text-link{font-size:15px}
