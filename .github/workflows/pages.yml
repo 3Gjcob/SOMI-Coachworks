@@ -33,3 +33,19 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Check the published site
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          echo "Pages settings:"
+          gh api "repos/${{ github.repository }}/pages" --jq '{html_url, cname, custom_404, https_enforced, build_type}' || true
+          for i in 1 2 3 4 5 6; do
+            echo "Request $i: $PAGE_URL"
+            curl -sS -o /dev/null -D - "$PAGE_URL" | grep -iE '^(HTTP|location)' || true
+            code=$(curl -sS -o /dev/null -w '%{http_code}' "$PAGE_URL" || true)
+            [ "$code" = 200 ] && exit 0
+            sleep 10
+          done
+          echo "::error::$PAGE_URL did not return 200 (last status $code); see redirect above"
+          exit 1
